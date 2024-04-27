@@ -1,12 +1,13 @@
 package main
 
 import (
-	"Server/settings"
-	"fmt"
+	"Server/db"
+	"Server/routers"
+	"log"
 )
 
 func main() {
-	settings.SettingInit()
-	fmt.Println(1)
-	return
+	db.InitDB()
+	router := routers.InitRouter()
+	log.Fatal(router.Run())
 }

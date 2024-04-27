@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"Server/model"
 	"Server/service"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -13,7 +12,7 @@ type UserRegReq struct {
 	Password string `json:"password"`
 }
 type UserRegResp struct {
-	ID string `json:"id"`
+	ID uint `json:"id"`
 }
 type UserLoginReq struct{}
 type UserLoginResp struct{}
@@ -26,34 +25,32 @@ func HistHandler(c *gin.Context) {
 }
 
 // 用户注册
-func RegHandler(c *gin.Context) error {
-	var id string
+func RegHandler(c *gin.Context) {
+	var id uint
+	var err error
 	req := UserRegReq{}
 	resp := UserRegResp{}
-	user := model.User{}
 	svc := service.NewService(c)
 
 	//绑定参数至结构体
-	err := c.ShouldBindQuery(&req)
+	req.Username = c.Query("username")
+	req.Password = c.Query("password")
 	if err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error()})
-		return err
 	}
 
 	//将用户信息插入数据库
-	id, err = svc.InsertUser(user.Username, user.Password)
+	id, err = svc.InsertUser(req.Username, req.Password)
 	if err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error()})
-		return err
 	}
 
 	resp.ID = id
 	c.JSON(http.StatusOK, resp)
-	return nil
 }
 
 // 用户登录
