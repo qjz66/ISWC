@@ -8,14 +8,13 @@ import (
 func InitRouter() *gin.Engine {
 	router := gin.Default()
 	router.MaxMultipartMemory = 50 << 20 //限制文件上传大小
-	router.Static("/videos", "./videos")
-	dy := router.Group("/douyin")
-	dy.GET("/feed", controller.FeedHandler) // 视频流接口
-	user := dy.Group("/user")
+	router.Static("/storage", "./storage")
+	rd := router.Group("/rd")
+	user := rd.Group("/user")
 	{
-		user.GET("/")          // 用户信息
-		user.POST("/register") // 注册
-		user.POST("/login")    // 登录
+		user.GET("/history", controller.HistHandler)  // 历史查询
+		user.POST("/register", controller.RegHandler) // 注册
+		user.POST("/login", controller.LoginHandler)  // 登录
 	}
 
 	return router
