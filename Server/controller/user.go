@@ -2,6 +2,7 @@ package controller
 
 import (
 	"Server/service"
+	"Server/util"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -14,8 +15,14 @@ type UserRegReq struct {
 type UserRegResp struct {
 	ID uint `json:"id"`
 }
-type UserLoginReq struct{}
-type UserLoginResp struct{}
+type UserLoginReq struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+type UserLoginResp struct {
+	ID    uint   `json:"id"`
+	Token string `json:"token"`
+}
 type UserHisReq struct{}
 type UserHisResp struct{}
 
@@ -35,11 +42,6 @@ func RegHandler(c *gin.Context) {
 	//绑定参数至结构体
 	req.Username = c.Query("username")
 	req.Password = c.Query("password")
-	if err != nil {
-		log.Println(err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": err.Error()})
-	}
 
 	//将用户信息插入数据库
 	id, err = svc.InsertUser(req.Username, req.Password)
@@ -55,5 +57,28 @@ func RegHandler(c *gin.Context) {
 
 // 用户登录
 func LoginHandler(c *gin.Context) {
+	req := UserLoginReq{}
+	resp := UserLoginResp{}
+	svc := service.NewService(c)
+	var id uint
+	var token string
 
+	req.Username = c.Query("username")
+	req.Password = c.Query("password")
+
+	id = svc.GetIDByName(req.Username, req.Password)
+	if id == 0 {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Username or Password error",
+		})
+	}
+	token, err := util.GenerateToken(int64(id), req.Username)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+	}
+	resp.Token = token
+	resp.ID = id
+	c.JSON(http.StatusOK, resp)
 }

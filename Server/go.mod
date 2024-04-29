@@ -3,6 +3,7 @@ module Server
 go 1.22.2
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.9.1
 	github.com/natefinch/lumberjack v2.0.0+incompatible
 	github.com/spf13/viper v1.18.2

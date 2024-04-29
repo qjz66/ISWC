@@ -8,3 +8,12 @@ func (d *Dao) InsertUser(username, password string) (id uint, err error) {
 	result := d.Create(&user)
 	return user.ID, result.Error
 }
+
+func (d *Dao) GetIDByName(username, password string) (id uint) {
+	user := model.User{}
+	result := d.Where("username = ? and password = ?", username, password).First(&user)
+	if result.RowsAffected == 0 {
+		return 0
+	}
+	return user.ID
+}
