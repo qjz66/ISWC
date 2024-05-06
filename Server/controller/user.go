@@ -71,12 +71,14 @@ func LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Username or Password error",
 		})
+		return
 	}
 	token, err := util.GenerateToken(int64(id), req.Username)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
 		})
+		return
 	}
 	resp.Token = token
 	resp.ID = id

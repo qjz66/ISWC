@@ -1,17 +1,23 @@
 package dao
 
-import "Server/model"
+import (
+	"Server/model"
+	"crypto/md5"
+	"encoding/hex"
+)
 
 // InsertUser将用户信息插入到数据库
 func (d *Dao) InsertUser(username, password string) (id uint, err error) {
-	user := model.User{RumorCount: new(int64), Times: new(int64), Username: username, Password: password}
+	md5password := md5.Sum([]byte(password))
+	user := model.User{RumorCount: new(int64), Times: new(int64), Username: username, Password: hex.EncodeToString(md5password[:])}
 	result := d.Create(&user)
 	return user.ID, result.Error
 }
 
 func (d *Dao) GetIDByName(username, password string) (id uint) {
 	user := model.User{}
-	result := d.Where("username = ? and password = ?", username, password).First(&user)
+	md5password := md5.Sum([]byte(password))
+	result := d.Where("username = ? and password = ?", username, hex.EncodeToString(md5password[:])).First(&user)
 	if result.RowsAffected == 0 {
 		return 0
 	}
