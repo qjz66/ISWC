@@ -28,7 +28,7 @@ type UserHisResp struct{}
 
 // 用户查询历史记录
 func HistHandler(c *gin.Context) {
-
+	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
 // 用户注册
