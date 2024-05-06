@@ -2,6 +2,7 @@ package routers
 
 import (
 	"Server/controller"
+	"Server/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,9 +13,9 @@ func InitRouter() *gin.Engine {
 	rd := router.Group("/rd")
 	user := rd.Group("/user")
 	{
-		user.GET("/history", controller.HistHandler)  // 历史查询
-		user.POST("/register", controller.RegHandler) // 注册
-		user.POST("/login", controller.LoginHandler)  // 登录
+		user.GET("/history", middleware.AuthByToken(), controller.HistHandler) // 历史查询
+		user.POST("/register", controller.RegHandler)                          // 注册
+		user.POST("/login", controller.LoginHandler)                           // 登录
 	}
 
 	return router
