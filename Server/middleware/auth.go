@@ -10,7 +10,7 @@ import (
 func AuthByToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
-		ID, _ := strconv.Atoi(c.Query("ID"))
+		ID, _ := strconv.Atoi(c.Query("id"))
 		var userID uint
 
 		//token解析失败

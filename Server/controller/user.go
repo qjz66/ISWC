@@ -26,12 +26,12 @@ type UserLoginResp struct {
 type UserHisReq struct{}
 type UserHisResp struct{}
 
-// 用户查询历史记录
+// HistHandler 用户查询历史记录
 func HistHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "ok"})
 }
 
-// 用户注册
+// RegHandler 用户注册
 func RegHandler(c *gin.Context) {
 	var id uint
 	var err error
@@ -55,7 +55,7 @@ func RegHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
-// 用户登录
+// LoginHandler 用户登录
 func LoginHandler(c *gin.Context) {
 	req := UserLoginReq{}
 	resp := UserLoginResp{}
