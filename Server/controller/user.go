@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"strconv"
 )
 
 type UserRegReq struct {
@@ -25,6 +26,21 @@ type UserLoginResp struct {
 }
 type UserHisReq struct{}
 type UserHisResp struct{}
+
+type UpdatePasswordReq struct {
+	Username    string `json:"username"`
+	NewPassword string `json:"new_password"`
+}
+type UpdatePasswordResp struct {
+	Message string `json:"message"`
+}
+type UpdateUsernameReq struct {
+	NewUsername string `json:"new_username"`
+	ID          int64  `json:"id"`
+}
+type UpdateUsernameResp struct {
+	Message string `json:"message"`
+}
 
 // HistHandler 用户查询历史记录
 func HistHandler(c *gin.Context) {
@@ -82,5 +98,36 @@ func LoginHandler(c *gin.Context) {
 	}
 	resp.Token = token
 	resp.ID = id
+	c.JSON(http.StatusOK, resp)
+}
+
+func UpdatePassword(c *gin.Context) {
+	req := UpdatePasswordReq{}
+	resp := UpdatePasswordResp{}
+	svc := service.NewService(c)
+	req.Username = c.Query("username")
+	req.NewPassword = c.Query("new_password")
+	err := svc.UpdatePassword(req.Username, req.NewPassword)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	resp.Message = "update password success"
+	c.JSON(http.StatusOK, resp)
+}
+
+func UpdateUsername(c *gin.Context) {
+	req := UpdateUsernameReq{}
+	resp := UpdateUsernameResp{}
+	svc := service.NewService(c)
+
+	userId, _ := strconv.Atoi(c.Query("id"))
+	req.ID = int64(userId)
+	req.NewUsername = c.Query("new_username")
+
+	err := svc.UpdateUsername(req.ID, req.NewUsername)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+	}
+	resp.Message = "update password success"
 	c.JSON(http.StatusOK, resp)
 }

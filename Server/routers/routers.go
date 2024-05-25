@@ -9,14 +9,17 @@ import (
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+
 	router.MaxMultipartMemory = 50 << 20 //限制文件上传大小
 	router.Static("/storage", "./storage")
 	rd := router.Group("/rd")
 	user := rd.Group("/user")
 	{
-		user.GET("/history", middleware.AuthByToken(), controller.HistHandler) // 历史查询
-		user.POST("/register", controller.RegHandler)                          // 注册
-		user.POST("/login", controller.LoginHandler)                           // 登录
+		user.GET("/history", middleware.AuthByToken(), controller.HistHandler)            // 历史查询
+		user.POST("/register", controller.RegHandler)                                     // 注册
+		user.POST("/login", controller.LoginHandler)                                      // 登录
+		user.PUT("/update_password", middleware.AuthByToken(), controller.UpdatePassword) //修改密码
+		user.PUT("update_username", middleware.AuthByToken(), controller.UpdateUsername)  //修改用户名
 	}
 	ground := rd.Group("/ground")
 	{

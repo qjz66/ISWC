@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" id="7ece2be2-bfd5-4ccb-ac8a-3bd02d33ff1c" customName="信安作品赛服务器" nameFormat="CUSTOM" useOpenSSHConfig="true">
+        <option name="customName" value="信安作品赛服务器" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
