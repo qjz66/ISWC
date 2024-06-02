@@ -1,7 +1,8 @@
-
-
 const userInfo = {
+  // 为模块开启独立的命名空间
   namespaced: true,
+  
+  // 数据
   state: {
     data: {},
     isLogined: false
@@ -25,13 +26,9 @@ const userInfo = {
       state.isLogined = false
     },
     // 修改用户信息
-    modifyUserInfo(state, newInfo) {
-      state.data = Object.assign(state.data, newInfo)
-    },
-    // 保存自动登录
-    setAutoLogin(state, isLogin) {
-      state.isAutoLogin = isLogin
-    }
+    // modifyUserInfo(state, newInfo) {
+    //   state.data = Object.assign(state.data, newInfo)
+    // },
 
   },
 
@@ -40,13 +37,10 @@ const userInfo = {
     saveInfo({ commit }, result) {
       commit('setUserInfo', result)
     },
-    // 保存自动登录
-    saveAutoLogin({ commit }, isLogin) {
-      commit('setAutoLogin', isLogin)
-    },
     // 退出登录
     logout({commit}) {
       commit('clearUserInfo', {})
+      // 跳转到登录页面
       location.href = '/login'
     }
   }

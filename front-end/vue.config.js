@@ -8,13 +8,12 @@ module.exports = {
   devServer: {
     port: 8082,
     proxy: {
-      '/api': {
-        target: 'http://106.55.168.13:8082',
-        // target: 'http://localhost:8088',
+      '/rd': {
+        target: 'http://121.43.144.140:8080',
         changeOrigin: true,
         ws: false,
         // pathRewrite: {
-        //   "^/api": "/api"
+        //   "^/rd": "/rd"
         // }
       }
     }
@@ -45,6 +44,13 @@ module.exports = {
       //只给出 js 文件的性能提示
       assetFilter: function (assetFilename) {
         return assetFilename.endsWith('.js');
+      }
+    }
+  },
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true
       }
     }
   }

@@ -3,7 +3,7 @@ import network from './network';
 // 登录
 export function login(data) {
   return network({
-    url: `/user/login`,
+    url: `/rd/user/login`,
     method: "post",
     data
   });
@@ -12,7 +12,7 @@ export function login(data) {
 // 注册
 export function register(data) {
   return network({
-    url: `/user/register`,
+    url: `/rd/user/register`,
     method: "post",
     data
   })

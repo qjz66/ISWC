@@ -1,267 +1,319 @@
-<!--
- 描述: 头部header模板
- 作者: Jack Chen
- 日期: 2020-06-20
--->
-
 <template>
-  <div class="header-container">
-  	<div class="header">
-      <div class="section">
-        <img src="../assets/logo.png" alt="logo" class="logo">
-        <ul>
-          <li>
-            <router-link to='/home' class="active">首页</router-link>
-          </li>
-          <li>
-            <a href="https://jackchen0120.github.io/vueDataV/" target="_blank">大数据可视化平台</a>
-          </li>
-          <li>
-            <a href="https://juejin.im/user/5eafd5fff265da7be959f56a" target="_blank">掘金·博文</a>
-          </li>
-          <li>
-            <a href="https://blog.csdn.net/qq_15041931" target="_blank">CSDN·博文</a>
-          </li>
-        </ul>
+  <div>
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="logo" @click="RouteToHome">
+            <span>
+              <img src="../picture/icon.png" alt="logo" /> RUMOUR ROBOT
+            </span>
+          </div>
+          <nav class="main-nav">
+            <ul class="menu">
+              <li class="menu-item">
+                <span
+                  @click="HandleClass(1)"
+                  :class="{ highlight: currentIndex === 1 }"
+                  >首页</span
+                >
+              </li>
+              <li class="menu-item">
+                <span
+                  @click="HandleClass(2)"
+                  :class="{ highlight: currentIndex === 2 }"
+                  >数据大屏</span
+                >
+              </li>
+              <li class="menu-item">
+                <span
+                  @click="HandleClass(3)"
+                  :class="{ highlight: currentIndex === 3 }"
+                  >数据广场</span
+                >
+              </li>
+              <li class="menu-item">
+                <span
+                  @click="HandleClass(4)"
+                  :class="{ highlight: currentIndex === 4 }"
+                  >个人中心</span
+                >
+              </li>
+            </ul>
+          </nav>
+          <span class="header-btn" @click="RouteToUploadFile"
+            ><i class="fa fa-rocket"></i>检测谣言</span
+          >
+        </div>
       </div>
-
-      <Dropdown trigger="hover" @on-click="changeMenu">
-        <a class="dropdown-link" href="javascript:void(0)">
-          <span class="username">{{ username }}</span>
-          <img class="avatar" src="../assets/avatar.jpg" alt="">
-          <Icon type="ios-arrow-down" size="14"></Icon>
-        </a>
-        <DropdownMenu slot="list">
-            <DropdownItem name="a">修改密码</DropdownItem>
-            <DropdownItem name="b">退出</DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
-    </div>
-
-    <a href="https://github.com/jackchen0120" target="_blank" class="github-corner">
-      <svg width="82" height="82" viewBox="0 0 250 250">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path> 
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" class="octo-arm"></path> 
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
-      </svg>
-    </a>
-
-    <Modal
-      title="修改密码"
-      v-model="modal"
-      @on-ok="ok"
-      :loading="modalLoading"
-      class-name="vertical-center-modal">
-      <Form :model="formItem" :label-width="90" ref="formItem">
-        <FormItem label="旧密码" prop="oldPassword">
-            <Input v-model="formItem.oldPassword" type="password" maxlength="20" placeholder="请输入旧密码"></Input>
-        </FormItem>
-        <FormItem label="新密码" prop="newPassword">
-            <Input v-model="formItem.newPassword" type="password" maxlength="20" placeholder="请输入新密码"></Input>
-        </FormItem>
-        <FormItem label="确认新密码" prop="confirmPassword">
-            <Input v-model="formItem.confirmPassword" type="password" maxlength="20" placeholder="请再次确认新密码"></Input>
-        </FormItem>
-      </Form>
-    </Modal>
-
+    </header>
   </div>
 </template>
 
 <script>
-import { resetPwd } from '@/utils/api';
-
 export default {
   name: 'Header',
-  components: {},
   data() {
-  	return {
-  		modal: false,
-      modalLoading: true,
-      username: this.$store.state.userInfo.data.userData.username,
-      formItem: {
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      },
-  	}
-  },
-  computed: {
-  	
-  },
-  created() {},
-  mounted() {
-    
+    return {
+      currentIndex: null
+    }
   },
   methods: {
-    // 点击头像下拉菜单选择
-    changeMenu(name) {
-      if (name == 'a') {
-        this.modal = true;
-        this.$refs['formItem'].resetFields();
-      } else if (name == 'b') {
-        this.$store.dispatch('userInfo/logout')
-      }
+    HandleClass(index) {
+      this.currentIndex = index
+      console.log(index, this.currentIndex)
+      if (index === 1) this.$router.push('/')
+      else if (index === 2) this.$router.push('/dataScreen')
+      else if (index === 3) this.$router.push('/dataSquare')
+      else if (index === 4) this.$router.push('/personalSpace')
     },
-    // 提交修改密码
-    ok() {
-      setTimeout(() => {
-        this.modalLoading = false;
-        this.$nextTick(() => {
-          this.modalLoading = true;
-        });
-      }, 100);
-
-      if (!this.$Valid.validPass(this.formItem.oldPassword)) {
-        this.$Message.error("旧密码应为8到20位字母或数字！");
-        return false;
-      } else if (!this.$Valid.validPass(this.formItem.newPassword)) {
-        this.$Message.error("新密码应为8到20位字母或数字！");
-        return false;
-      } else if (!this.$Valid.validPass(this.formItem.confirmPassword)){
-        this.$Message.error("确认密码有误");
-        return false;
-      } else if (this.formItem.confirmPassword !== this.formItem.newPassword){
-        this.$Message.error("两次密码不一致");
-        return false;
-      }
-
-      let data = {
-        username: this.$store.state.userInfo.data.userData.username,
-        oldPassword: this.formItem.oldPassword,
-        newPassword: this.formItem.confirmPassword
-      }
-
-      resetPwd(data)
-      .then(res => {
-        if (res.code == 0) {
-          this.modal = false;
-          this.$Message.success('修改密码成功');
-        } else {
-          this.$Message.error(res.msg);
-        }
-      })
+    RouteToHome() {
+      this.$router.push('/')
+    },
+    RouteToUploadFile() {
+      this.$router.push('/uploadFile')
     }
-
+  },
+  mounted() {
+    console.log(this.$route.path)
+    if (this.$route.path === '/') this.currentIndex = 1
+    else if (this.$route.path === '/dataScreen') this.currentIndex = 2
+    else if (this.$route.path === '/dataSquare') this.currentIndex = 3
+    else if (this.$route.path === '/personalSpace') this.currentIndex = 4
   }
-  	
 }
 </script>
 
 <style lang="scss" scoped>
-.header-container {
-  .header {
-    width: 100%;
-    background: #17174c;
+.header {
+  position: absolute;
+  width: 100%;
+  height: 106px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 99999;
+
+  .header-inner {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px 70px 20px 40px;
-    box-sizing: border-box;
-    .section {
+    justify-content: flex-start;
+
+    span {
+      cursor: pointer;
+    }
+
+    .logo span {
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 500;
       display: flex;
-      ul {
+      align-items: center;
+      color: #fff;
+      font-family: 'Michroma', sans-serif;
+
+      img {
+        height: 48px;
+        margin-right: 3px;
+        width: 49px;
+      }
+    }
+
+    .main-nav {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      left: 45%;
+      padding-left: 5px;
+
+      .menu {
         display: flex;
         align-items: center;
-        margin-left: 60px;
+        justify-content: flex-start;
+
         li {
-          margin-right: 40px;
-          a {
+          position: relative;
+          margin-right: 23px;
+          letter-spacing: 0.6px;
+
+          span {
+            cursor: pointer;
+            font-family: 'Chakra Petch', sans-serif;
+            position: relative;
+            display: block;
             color: #fff;
-            opacity: .5;
-            &:hover, &.active {
-              opacity: 1;
-            };
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 24px;
+            text-transform: uppercase;
+            padding-right: 21px;
+            padding-top: 20px;
+            padding-bottom: 20px;
           }
+
+          span:hover {
+            background-image: linear-gradient(
+              267deg,
+              #641ff9 27.93%,
+              #02c5f7 99.79%,
+              #c6bafd -31.69%,
+              #b7a2fd -22.78%
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+        }
+
+        li.menu-item.current > span::after {
+          background-image: linear-gradient(
+            267deg,
+            #641ff9 27.93%,
+            #02c5f7 99.79%,
+            #c6bafd -31.69%,
+            #b7a2fd -22.78%
+          );
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
       }
     }
-    .dropdown-link {
-      color: #fff; 
-      .username {
-        padding-right: 10px;
-      }
-      .ivu-icon {
-        margin-left: 5px;
-      }
-    }
-    img {
-      outline: none;
-      &.logo {
-        height: 40px;
-      }
-      &.avatar {
-        border-radius: 50%;
-        width: 42px;
-        height: 42px;
-        vertical-align: middle;
-        background: #eee;
-      }
-    }
 
-  }
+    .header-btn {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: linear-gradient(
+        267deg,
+        #641ff9 27.93%,
+        #02c5f7 99.79%,
+        #c6bafd -31.69%,
+        #b7a2fd -22.78%
+      );
+      color: #fff;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 8px 30px;
+      margin-left: auto;
+      height: 48px;
+      border: none;
+      border-radius: 30px;
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      transition: all 0.3s ease;
 
-  .github-corner {
-    svg {
-      fill: #42b983; 
-      color: #fff; 
-      position: absolute; 
-      top: 0; 
-      border: 0; 
-      right: 0;
-    }
-    .octo-arm {
-      transform-origin: 130px 106px;
-    }
-    &:hover {
-      .octo-arm {
-        -webkit-animation: octocat-wave .56s ease-in-out;
-        animation: octocat-wave .56s ease-in-out;
+      .fa-rocket {
+        margin-left: -8px;
+        margin-right: 5px;
+        margin-top: 3px;
       }
     }
 
-  }
+    .header-btn:hover {
+      background: linear-gradient(
+        -267deg,
+        #641ff9 27.93%,
+        #02c5f7 99.79%,
+        #c6bafd -31.69%,
+        #b7a2fd -22.78%
+      );
+    }
 
-  @-webkit-keyframes octocat-wave {
-    0%, 100% {
-      -webkit-transform: rotate(0);
-      transform: rotate(0);
-    }
-    20%, 60% {
-      -webkit-transform: rotate(-25deg);
-      transform: rotate(-25deg);
-    }
-    40%, 80% {
-      -webkit-transform: rotate(10deg);
-      transform: rotate(10deg);
-    }
-  }
-  @keyframes octocat-wave {
-    0%, 100% {
-      -webkit-transform: rotate(0);
-      transform: rotate(0);
-    }
-    20%, 60% {
-      -webkit-transform: rotate(-25deg);
-      transform: rotate(-25deg);
-    }
-    40%, 80% {
-      -webkit-transform: rotate(10deg);
-      transform: rotate(10deg);
-    }
-  }
+    .mobile-button {
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      -o-transform: translateY(-50%);
+      transform: translateY(-50%);
+      right: 15px;
+      width: 26px;
+      height: 26px;
+      display: none;
+      background-color: transparent;
+      cursor: pointer;
+      -webkit-transition: all 0.3s ease;
+      -moz-transition: all 0.3s ease;
+      -ms-transition: all 0.3s ease;
+      -o-transition: all 0.3s ease;
+      transition: all 0.3s ease;
 
-}	
-</style>
-<style lang="scss">
-.vertical-center-modal{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+      span {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 3px;
+      }
+    }
 
-  .ivu-modal{
-      top: 0;
+    .mobile-button:before,
+    .mobile-button:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 3px;
+    }
+
+    .mobile-button:before,
+    .mobile-button:after,
+    .mobile-button span {
+      background-color: #fff;
+      -webkit-transition: all ease 0.3s;
+      -moz-transition: all ease 0.3s;
+      transition: all ease 0.3s;
+    }
+
+    .mobile-button:before {
+      -webkit-transform: translateY(-7px);
+      -moz-transform: translateY(-7px);
+      transform: translateY(-7px);
+    }
+
+    .mobile-button:after {
+      -webkit-transform: translateY(7px);
+      -moz-transform: translateY(7px);
+      transform: translateY(7px);
+    }
+
+    .mobile-button.active:before {
+      -webkit-transform: rotate3d(0, 0, 1, 45deg);
+      -moz-transform: rotate3d(0, 0, 1, 45deg);
+      transform: rotate3d(0, 0, 1, 45deg);
+    }
+
+    .mobile-button.active:after {
+      -webkit-transform: rotate3d(0, 0, 1, -45deg);
+      -moz-transform: rotate3d(0, 0, 1, -45deg);
+      transform: rotate3d(0, 0, 1, -45deg);
+    }
+
+    .mobile-button.active span {
+      opacity: 0;
+    }
   }
 }
 
+.highlight {
+  background-image: linear-gradient(
+    267deg,
+    #641ff9 27.93%,
+    #02c5f7 99.79%,
+    #c6bafd -31.69%,
+    #b7a2fd -22.78%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 </style>

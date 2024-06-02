@@ -1,27 +1,29 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
+    <!-- <Home/> -->
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    components: {
+import Home from './views/Home.vue'
 
-    }
+export default {
+  name: 'App',
+  components: {
+    Home
+  },
+  mounted() {
+    // this.$router.push('/home')
   }
+}
 </script>
 
 <style>
-  #app {
-    width: 100vw;
-    height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
+#app {
+  width: 100vw;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 </style>

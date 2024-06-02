@@ -22,7 +22,7 @@ service.interceptors.request.use(config => {
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    console.log(response.data)
+    console.log(response)
     // 抛出401错误，因为token失效，重新刷新页面，清空缓存，跳转到登录界面
     if (response.data.code == 401 || response.data.code === 403) {
       store.dispatch('userInfo/logout')
@@ -31,7 +31,7 @@ service.interceptors.response.use(
       });
     }
 
-    return response.data;
+    return response;
   },
   error => {
     const { status } = error.response;
