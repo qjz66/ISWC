@@ -10,16 +10,21 @@
         <el-input
           type="textarea"
           resize="none"
-          :rows="4"
-          placeholder="快来发表动态吧！"
+          :rows="2"
+          placeholder="请输入需要搜索的关键词"
           v-model="textarea"
         >
         </el-input>
-        <el-button type="primary" @click="commitUpdate">发布</el-button>
+        <div class="btn-control">
+          <span class="cancel" @click="cancelSearch">取消</span>
+          <el-button class="btn" type="success" round @click="commitSearch()"
+            >搜索</el-button
+          >
+        </div>
       </div>
       <!-- 动态显示 -->
       <div class="info-body" v-for="item in comments" :key="item.date">
-        <div class="info-show">
+        <div class="info-show" v-if="item.showStatus">
           <!-- 个人信息 -->
           <div class="info">
             <span class="info-name">{{ item.fromName }}</span>
@@ -52,6 +57,19 @@
             <span class="control-pinglun" @click="showCommentInput(item)">
               <img src="../picture/pinglun.png" alt="" />
             </span>
+
+            <span
+              class="control-agree"
+              :style="item.agree == 0 ? 'color : red;' : ''"
+              @click="changeAgree(item, 0)"
+              >赞成</span
+            >
+            <span
+              class="control-disagree"
+              :style="item.agree == 1 ? 'color : red;' : ''"
+              @click="changeAgree(item, 1)"
+              >反对</span
+            >
           </div>
           <!-- 回复列表 -->
           <div class="reply">
@@ -83,7 +101,7 @@
                 >
                 </el-input>
                 <div class="btn-control">
-                  <span class="cancel" @click="cancel">取消</span>
+                  <span class="cancel" @click="cancelComment">取消</span>
                   <el-button
                     class="btn"
                     type="success"
@@ -106,52 +124,42 @@
           <el-row>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1674289 用户名:心花小子 新浪微博 谣言发布次数:65
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1243239 用户名:百事可爱 新浪微博 谣言发布次数:57
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1567434 用户名:寄云间 新浪微博 谣言发布次数:49
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:193234534 用户名:鸭梨山大 b站 谣言发布次数:43
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1634572 用户名:呦呦儿 新浪微博 谣言发布次数:33
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:182589234 用户名:隔壁小孩 b站 谣言发布次数:31
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1272345 用户名:怀中猫 新浪微博 谣言发布次数:29
               </el-card>
             </el-col>
             <el-col :span="24">
               <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:001 用户名:张三 新浪微博 谣言发布次数:12
+                ID:1678025798 用户名:空山梦 b站 谣言发布次数:27
               </el-card>
             </el-col>
           </el-row>
@@ -164,6 +172,7 @@
 <script>
 import Header from '@/components/Header.vue'
 import * as CommentData from '../utils/mockdata'
+import { getRumourInfo } from '@/utils/api'
 
 export default {
   name: 'dataSquare',
@@ -175,11 +184,13 @@ export default {
       textarea: '',
       comments: [],
       inputComment: '',
-      showItemId: ''
+      showItemId: '',
+      targetName: ''
     }
   },
   mounted() {
     this.comments = CommentData.comment.data
+    // this.getInfo()
   },
   methods: {
     ChangeLike(item, type) {
@@ -195,43 +206,91 @@ export default {
     showCommentInput(item, reply) {
       if (reply) {
         this.inputComment = '@' + reply.fromName + ' '
+        this.targetName = reply.fromName + ' '
       } else {
         this.inputComment = ''
+        this.targetName = item.fromName
       }
       this.showItemId = item.id
     },
-    cancel() {
+    cancelComment() {
       this.showItemId = ''
+    },
+    cancelSearch() {
+      console.log('清空输入框')
+      this.textarea = ''
+      this.commitSearch()
+    },
+    getNowTime() {
+      let year = new Date().getFullYear() //获取当前时间的年份
+      let month = new Date().getMonth() + 1 //获取当前时间的月份
+      let day = new Date().getDate() //获取当前时间的天数
+      let hours = new Date().getHours() //获取当前时间的小时
+      let minutes = new Date().getMinutes() //获取当前时间的分数
+      //当小于 10 的是时候，在前面加 0
+      if (hours < 10) {
+        hours = '0' + hours
+      }
+      if (minutes < 10) {
+        minutes = '0' + minutes
+      }
+      //拼接格式化当前时间
+      let times = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
+      return times
     },
     commitComment(item) {
       console.log('评论内容：', this.inputComment)
       console.log(this.comments)
+      let content = ''
+      if (this.inputComment.startsWith('@')) {
+        content = this.inputComment.split(' ').slice(1).join(' ')
+      } else {
+        content = this.inputComment
+      }
+      console.log(content)
       let newComment = {
-        id: '345232144545', //主键id
-        commentId: 'comment20001', //父评论id，即父亲的id
+        id: item.id, //主键id
+        commentId: item.commentId, //父评论id，即父亲的id
         fromId: 'observer2232432', //评论者id
-        fromName: '夕阳红', //评论者昵称
-        toId: 'errhefe2323213', //被评论者id
-        toName: '犀利的评论家', //被评论者昵称
-        content: this.inputComment, //评论内容
-        date: '2018-37-05 08:35' //评论时间
+        fromName: '枯城', //评论者昵称
+        toId: item.commentId, //被评论者id
+        toName: this.targetName, //被评论者昵称
+        content: content, //评论内容
+        date: this.getNowTime() //评论时间
       }
       item.reply.push(newComment)
+      this.showItemId = ''
     },
-    commitUpdate() {
+    commitSearch() {
       console.log('动态内容:', this.textarea)
-      let newUpdate = {
-        id: 'comment01002',
-        date: '2018-17-15 08:30',
-        ownerId: 'talents2100020',
-        fromId: 'errhefe2322213',
-        fromName: '毒蛇郭德纲111',
-        likeNum: 0,
-        likeStatus: 0,
-        content: this.textarea,
-        reply: []
+      this.comments.forEach((item) => {
+        if (item.content.includes(this.textarea)) {
+          item.showStatus = true
+        } else {
+          item.showStatus = false
+        }
+      })
+    },
+    changeAgree(item, type) {
+      item.agree = type
+    },
+    getInfo() {
+      let data = {
+        id: this.$store.state.userInfo.data.id
       }
-      this.comments.push(newUpdate)
+      getRumourInfo(data)
+        .then((res) => {
+          console.log('获取推送:', res)
+          if (res.status == 200) {
+            console.log('成功')
+          } else {
+            console.log('失败')
+            this.$Message.error(res.msg)
+          }
+        })
+        .catch(() => {
+          this.isLoading = false
+        })
     }
   }
 }
@@ -261,6 +320,27 @@ export default {
     background-color: #363b79;
     border-radius: 10px;
 
+    .btn-control {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-bottom: 10px;
+
+      padding-top: 10px;
+
+      .cancel {
+        font-size: 16px;
+        margin-right: 20px;
+        cursor: pointer;
+        color: white;
+      }
+      .btn {
+        margin-right: 20px;
+        font-size: 16px;
+        background-color: rgb(48, 75, 210);
+      }
+    }
+
     .el-textarea {
       margin-left: 10px;
       margin-right: 10px;
@@ -273,15 +353,6 @@ export default {
       background-color: #2e3377;
       border: none;
       border-radius: 20px;
-    }
-
-    .el-button {
-      margin-top: 15px;
-      margin-left: 20px;
-      margin-bottom: 15px;
-      border-radius: 15px;
-      border: none;
-      font-size: 16px;
     }
   }
 
@@ -332,12 +403,22 @@ export default {
         width: calc(100% - 20px);
       }
 
+      .el-card:hover {
+        background-image: linear-gradient(to right, #6253e1, #852d91);
+        box-shadow: 0 7px 15px 0 rgba(236, 116, 149, 0.75);
+      }
+
       .el-card {
         font-size: 20px;
         color: white;
         background-color: #363b79;
         border: none;
         border-radius: 20px;
+      }
+
+      .el-card:hover {
+        background-image: linear-gradient(to right, #6253e1, #852d91);
+        box-shadow: 0 7px 15px 0 rgba(236, 116, 149, 0.75);
       }
     }
 
@@ -424,6 +505,16 @@ export default {
         }
       }
 
+      .control-agree {
+        margin-left: 40px;
+      }
+
+      .control-disagree {
+        margin-left: 20px;
+      }
+
+      .control-agree:hover,
+      .control-disagree:hover,
       .control-dianzan:hover,
       .control-pinglun:hover {
         cursor: pointer;
@@ -498,6 +589,7 @@ export default {
           .btn {
             margin-right: 20px;
             font-size: 16px;
+            background-color: rgb(48, 75, 210);
           }
         }
       }

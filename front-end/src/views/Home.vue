@@ -7,28 +7,16 @@
         <div class="row d-flex align-items-center justify-content-between">
           <div class="col-lg-6">
             <div class="home-content">
-              <h1><span>RUMOUR ROBOT</span> <br />谣言检测的能力</h1>
-              <p>我们谣言检测模型可以准确识别出您给出的新闻是否为一则谣言</p>
+              <h1>
+                <span>RUMOUR BUZZ</span> <br />面向用户的自动化谣言检测系统
+              </h1>
+              <p>
+                我们谣言检测模型基于TextCNN模型和MLP技术的多视图特征提取器、基于领域记忆库的新闻隐性标签发掘和丰富模块以及基于领域适配器的领域视图权重聚合模块,可以准确识别出您给出的新闻是否为一则谣言
+              </p>
               <div class="my-btn">
                 <span class="main-btn" @click="RouteToUploadFile"
                   ><i class="fa fa-rocket"></i> <span>检测谣言</span></span
                 >
-              </div>
-              <div class="home-facts">
-                <ul class="facts-list list-unstyled">
-                  <li>
-                    <span class="number">32K+</span>
-                    <span>Project Completed</span>
-                  </li>
-                  <li>
-                    <span class="number">20K+</span>
-                    <span>Happy Clients</span>
-                  </li>
-                  <li>
-                    <span class="number">23+</span>
-                    <span>Language supports</span>
-                  </li>
-                </ul>
               </div>
             </div>
           </div>
@@ -56,50 +44,31 @@
       <div class="container">
         <div class="row">
           <div class="col-12">
-            <h3 class="main-title">为什么选择我们这个RUMOUR ROBOT</h3>
+            <h3 class="main-title">为什么选择我们这个RUMOUR BUZZ</h3>
           </div>
         </div>
         <div class="row">
           <div class="col-lg-4 col-md-6 item">
             <div class="feature-item">
               <img src="../picture/11.png" alt="feature image" />
-              <h3 class="feature-title">Write content faster</h3>
-              <p>Create content quickly with StartAI's AI algorithms.</p>
+              <h3 class="feature-title">
+                基于TextCNN模型和多层感知机的多视图特征提取
+              </h3>
+              <p>多维度提取语义、情感、风格特征</p>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 item">
             <div class="feature-item">
               <img src="../picture/21.png" alt="feature image" />
-              <h3 class="feature-title">Copy and publish</h3>
-              <p>Share content seamlessly across platforms with StartAI.</p>
+              <h3 class="feature-title">基于领域记忆库的隐性标签发掘</h3>
+              <p>自动化地发掘、捕捉和储存隐性领域特征信息</p>
             </div>
           </div>
           <div class="col-lg-4 col-md-6 item">
             <div class="feature-item">
               <img src="../picture/31.png" alt="feature image" />
-              <h3 class="feature-title">Unleash Creativity</h3>
-              <p>Spark creativity using AI as your content foundation.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 item">
-            <div class="feature-item">
-              <img src="../picture/41.png" alt="feature image" />
-              <h3 class="feature-title">Multi-Language Support</h3>
-              <p>Reach global audiences with StartAI's language versatility.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 item">
-            <div class="feature-item">
-              <img src="../picture/51.png" alt="feature image" />
-              <h3 class="feature-title">Content Customization</h3>
-              <p>Customize content to match your brand perfectly.</p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 item">
-            <div class="feature-item">
-              <img src="../picture/61.png" alt="feature image" />
-              <h3 class="feature-title">Data Security</h3>
-              <p>Ensure data and content security with StartAI's safeguards.</p>
+              <h3 class="feature-title">基于领域适配器的跨视图权重聚合</h3>
+              <p>建模和吸收领域差异，修正特征预测，实现准确预测</p>
             </div>
           </div>
         </div>
@@ -150,6 +119,7 @@ export default {
   margin-bottom: 25px;
   line-height: 1.2;
   text-align: left;
+  width: 700px;
 }
 
 .home .home-content h1:before {
@@ -261,6 +231,7 @@ export default {
 }
 
 .home .home-image img {
+  margin-left: 50px;
   display: block;
 }
 

@@ -2,50 +2,73 @@
   <div class="dataScreen">
     <Row class="content">
       <Col span="8">
+        <!-- 微博热榜分析 -->
         <div class="list">
           <div class="left">
             <span class="title"
-              ><span class="title-gradient">模块一分析</span></span
+              ><span class="title-gradient">微博热榜分析</span></span
             >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <div class="chart-68">
-              <area-chart
-                ref="chart1"
-                id="left_1"
-                :select-range-date="selectRangeDate"
-                :config="cnfigData1"
-              ></area-chart>
-            </div>
-            <div class="chart-32">
-              <radar-chart
-                ref="chart2"
-                id="left_2"
-                :data="chatRadarData"
-              ></radar-chart>
-            </div>
-          </div>
-        </div>
-        <div class="list">
-          <div class="left">
-            <span class="title"
-              ><span class="title-gradient">模块二分析</span></span
-            >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <div class="chart-68">
-              <chart1 ref="chart3" id="left_3" :config="configData2"></chart1>
-            </div>
-            <div class="chart-32">
-              <radar-chart
-                ref="chart4"
-                id="left_4"
-                :data="officeRadarData"
-              ></radar-chart>
+            <div class="left-info">
+              <el-row :gutter="12">
+                <el-col :span="24">
+                  <el-card shadow="always"
+                    >#泰坦号深海内爆一年后又有富豪要挑战#美国俄亥俄州的一位亿万富翁计划乘坐深海潜水器抵达“泰坦号”事故发生地，以证明该行业的安全性。<span
+                      style="color: red"
+                      >置信率:80%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#一老板称可用30万赎回被卖缅甸夫妻#】据海报新闻报道：近日，重庆一对夫妻易先生和王女士被骗到泰
+                    国卖到缅甸的事情引发关注。5月27日，王女士的表姐刘女士告诉海报新闻记者，一位自称是缅甸妙瓦底的老板向他们表示，可以用30万赎回两人。<span
+                      style="color: red"
+                      >置信率:78%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    #20岁女生留学新加坡坠亡#，家属：离毕业不到10天，财物遗失。<span
+                      style="color: red"
+                      >置信率:91%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    重庆21岁女孩常州被害后遭分尸，凶手以被害人语气向家属要钱。<span
+                      style="color: red"
+                      >置信率:87%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#法国镇长挪用公款供养女巫#】据英国广播公司（BBC）27日报道，法国知名旅游景点阿格德镇镇长吉尔·德·埃托雷因挪用公款于今年3月被捕。最新调查发现，被挪用的公款，很大一部分花在了当地一个自称能“通灵”的女巫身上。<span
+                      style="color: red"
+                      >置信率:68%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#遮挡富士山网红打卡点的黑网已破洞#
+                    日媒：“没想到这么快”】据日本共同社报道，日本山梨县富士河口湖町一处网红打卡点因游客太多且随之带来的不文明行为增多而竖起黑色屏障网，然而当地政府28日表示，用来遮挡风景的黑色屏障网目前已经出现了多个破洞。<span
+                      style="color: red"
+                      >置信率:77%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#飞机滑出后女子疑因情感问题强行要求下机#】据看看新闻KNEWS报道：据网友爆料，5月27日深夜，由浦东飞往深圳的DZ6208航班，飞机滑出后，一名女子疑因情感问题，强行要求下飞机。最终机上所有乘客也只得下机。机组根据规定对飞机进行二次清舱后，旅客重新登机起飞，航班因此延误2小时。<span
+                      style="color: red"
+                      >置信率:84%</span
+                    >
+                  </el-card>
+                </el-col>
+              </el-row>
             </div>
           </div>
         </div>
@@ -57,49 +80,71 @@
         </div>
       </Col>
       <Col span="8">
+        <!-- b站热榜分析 -->
         <div class="list">
           <div class="right">
             <span class="title"
-              ><span class="title-gradient">模块三分析</span></span
+              ><span class="title-gradient">b站热榜分析</span></span
             >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <div class="chart-32">
-              <radar-chart
-                ref="chart5"
-                id="right_1"
-                :data="friendRadarData"
-              ></radar-chart>
-            </div>
-            <div class="chart-68">
-              <chart2 ref="chart6"></chart2>
-            </div>
-          </div>
-        </div>
-        <div class="list">
-          <div class="right">
-            <span class="title"
-              ><span class="title-gradient">模块四分析</span></span
-            >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <div class="chart-32">
-              <radar-chart
-                ref="chart7"
-                id="right_3"
-                :data="momentsRadarData"
-              ></radar-chart>
-            </div>
-            <div class="chart-68">
-              <chart3
-                ref="chart8"
-                :selectRangeDate="selectRangeDate"
-                id="right_4"
-              ></chart3>
+            <div class="right-info">
+              <el-row :gutter="12">
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#蛐蛐你是什么意思#？】蛐蛐一词多用于形容小声议论他人，尤其指背后说人闲话、坏话的行为。近年来因短视频流行，该词成网络热梗。<span
+                      style="color: red"
+                      >置信率:79%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    #牛排价格都不如猪排贵了#最近一段时间，牛肉价格“大跳水”，引发关注。以往上好的牛腱子肉通常需要一斤花费百来元，现在仅需几十元就可以拿下。曾经高高在上的牛肉为啥会跌价，
+                    #可以实现牛肉自由了吗#？<span style="color: red"
+                      >置信率:70%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    #知名配音演员公开维权#被侵权配音演员林景称“真正让人在意的不是AI，而是侵权。”#云中君钟离配音演员遭AI侵权<span
+                      style="color: red"
+                      >置信率:91%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#韩称朝鲜再向韩放飞600多个带垃圾的气球#】据央视军事报道：当地时间6月2日上午，据韩国联合参谋本部消息，朝鲜从1日起再次向韩国放飞600多个携带垃圾等污染物的气球。1日晚间起，韩国京畿道以及首尔等地区陆续发现朝鲜放飞的气球，韩国多地政府向民众紧急推送应急手机警报，呼吁民众减少外出并小心空中飘浮物落下。韩国军方提醒市民发现可疑物体时不要触碰并立刻就近向军方或警方报告。<span
+                      style="color: red"
+                      >置信率:82%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【#总被闹钟吓醒心脏承受不住#】几乎每个需要早起的日子，闹钟都会派上用场。有些人怕起不来，会定多个闹钟或换一个急促的铃声，殊不知这样反而会开启“糟糕”的一天。戳图，看#这样定闹钟可以无痛起床#↓↓#为什么有的人一天只睡4小时也很精神#<span
+                      style="color: red"
+                      >置信率:83%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    #白开水在4小时内饮用活性最佳#水对人体很重要，人可以三天无饭，但绝不能三天无水。想要健康，必须要正确认识水，选对水，喝对水。#矿泉水苏打水喝了真的健康吗#？<span
+                      style="color: red"
+                      >置信率:79%</span
+                    >
+                  </el-card>
+                </el-col>
+                <el-col :span="24">
+                  <el-card shadow="always">
+                    【安徽#芜湖再通报黄金回收店鬼秤事件#：拟对涉事店铺罚款并列入严重违法失信名单】6月1日，针对“网络博主打假称安徽芜湖一金店惊现‘五两秤’”一事，安徽芜湖市镜湖区市场监督管理局再度发布情况通报。通报称，经查明，该店使用加装芯片改造破坏其准确度的计量器具从事贵金属回收贸易结算；在收购贵金属经营活动中未保证商品量的量值准确。<span
+                      style="color: red"
+                      >置信率:92%</span
+                    >
+                  </el-card>
+                </el-col>
+              </el-row>
             </div>
           </div>
         </div>
@@ -107,10 +152,11 @@
     </Row>
     <Row class="bottom-list">
       <Col span="16">
+        <!-- 近几天微博和b站的谣言数 -->
         <div class="list">
           <div class="bottom">
             <span class="title"
-              ><span class="title-gradient">模块五分析</span></span
+              ><span class="title-gradient">近几月各大平台的谣言数</span></span
             >
             <span class="angle1"></span>
             <span class="angle2"></span>
@@ -119,36 +165,13 @@
             <chart4 ref="chart9" id="bottom_1"></chart4>
           </div>
         </div>
-        <div class="list">
-          <div class="bottom">
-            <span class="title"
-              ><span class="title-gradient">模块六分析</span></span
-            >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <chart5 ref="chart10" id="bottom_2"></chart5>
-          </div>
-        </div>
-        <div class="list">
-          <div class="bottom">
-            <span class="title"
-              ><span class="title-gradient">模块七分析</span></span
-            >
-            <span class="angle1"></span>
-            <span class="angle2"></span>
-            <span class="angle3"></span>
-            <span class="angle4"></span>
-            <chart6 ref="chart11" id="bottom_3"></chart6>
-          </div>
-        </div>
       </Col>
       <Col span="8">
+        <!-- 各大平台谣言占比 -->
         <div class="list right-bottom">
           <div class="bottom bottom1">
             <span class="title"
-              ><span class="title-gradient">模块八分析</span></span
+              ><span class="title-gradient">各大平台谣言占比</span></span
             >
             <span class="angle1"></span>
             <span class="angle2"></span>
@@ -199,12 +222,12 @@ export default {
         radius: 218
       },
       title: [
-        '数据1:456,789',
-        '数据2:123,12',
-        '数据3:134,23',
-        '数据4:234,234',
-        '数据5:123,123',
-        '数据6:678,123'
+        // '数据1:456,789',
+        // '数据2:123,12',
+        // '数据3:134,23',
+        // '数据4:234,234',
+        // '数据5:123,123',
+        // '数据6:678,123'
       ],
       // 模块一面积图数据
       cnfigData1: {
@@ -463,7 +486,7 @@ export default {
       context.closePath()
       context.fill()
       //内圆
-      let nowRange = 36
+      let nowRange = 74
       context.save()
       this.drawCircle(context)
       this.drawSin(this.xOffset, context, nowRange)
@@ -539,7 +562,7 @@ export default {
       ctx.font = size + 'px Microsoft Yahei'
       ctx.textAlign = 'center'
       ctx.fillStyle = '#95EFFF'
-      ctx.fillText('平均值', 120, 120 + size)
+      ctx.fillText('平均置信概率', 120, 120 + size)
       ctx.restore()
     },
     // 旋转的文字
@@ -651,7 +674,7 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 .dataScreen {
   height: 100%;
   width: 100%;
@@ -685,7 +708,112 @@ export default {
     }
 
     .list {
-      height: 48%;
+      height: 100%;
+      .left {
+        .left-info {
+          margin-top: 10px;
+          height: 440px;
+          overflow-y: auto;
+          overflow-x: hidden;
+
+          .el-col-24 {
+            margin-left: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            width: calc(100% - 40px);
+          }
+          .el-card {
+            font-size: 15px;
+            color: white;
+            background-color: #363b79;
+            border: none;
+            border-radius: 20px;
+            margin-top: 20px;
+
+            .el-card__body {
+              padding: 0;
+              padding-left: 20px;
+              padding-bottom: 10px;
+              padding-top: 5px;
+            }
+          }
+          .el-card:hover {
+            box-shadow: 0 7px 15px 0 rgba(49, 196, 190, 0.75);
+          }
+        }
+        .left-info::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+          /**/
+        }
+        .left-info::-webkit-scrollbar-track {
+          background: rgb(239, 239, 239);
+          border-radius: 2px;
+        }
+        .left-info::-webkit-scrollbar-thumb {
+          background: #bfbfbf;
+          border-radius: 10px;
+        }
+        .left-info::-webkit-scrollbar-thumb:hover {
+          background: #333;
+        }
+        .left-info::-webkit-scrollbar-corner {
+          background: #179a16;
+        }
+      }
+
+      .right {
+        .right-info {
+          margin-top: 10px;
+          height: 440px;
+          overflow-y: auto;
+          overflow-x: hidden;
+
+          .el-col-24 {
+            margin-left: 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            width: calc(100% - 40px);
+          }
+          .el-card {
+            font-size: 15px;
+            color: white;
+            background-color: #363b79;
+            border: none;
+            border-radius: 20px;
+            margin-top: 20px;
+
+            .el-card__body {
+              padding: 0;
+              padding-left: 20px;
+              padding-bottom: 10px;
+              padding-top: 5px;
+            }
+          }
+          .el-card:hover {
+            box-shadow: 0 7px 15px 0 rgba(49, 196, 190, 0.75);
+          }
+        }
+        .right-info::-webkit-scrollbar {
+          width: 10px;
+          height: 10px;
+          /**/
+        }
+        .right-info::-webkit-scrollbar-track {
+          background: rgb(239, 239, 239);
+          border-radius: 2px;
+        }
+        .right-info::-webkit-scrollbar-thumb {
+          background: #bfbfbf;
+          border-radius: 10px;
+        }
+        .right-info::-webkit-scrollbar-thumb:hover {
+          background: #333;
+        }
+        .right-info::-webkit-scrollbar-corner {
+          background: #179a16;
+        }
+      }
 
       .left,
       .right {
@@ -736,8 +864,10 @@ export default {
         width: 33.3333%;
         padding-right: 1.5%;
         float: left;
+        margin-left: 400px;
 
         #bottom_4 {
+          margin-left: 60px;
           padding: 0 20px;
         }
 
@@ -750,8 +880,8 @@ export default {
       }
 
       .right-bottom {
-        width: 100%;
-        padding-right: 0;
+        margin-left: -200px;
+        width: 397px;
 
         .bottom1 {
           width: 100%;

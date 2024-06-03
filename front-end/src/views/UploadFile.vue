@@ -14,7 +14,14 @@
       <!-- 文件上传 -->
       <div class="uploadFile" v-if="typeView === 0">
         <dv-border-box-11 title="文件上传">
-          <Upload class="upload-file" multiple type="drag" action="">
+          <Upload
+            class="upload-file"
+            multiple
+            type="drag"
+            :before-upload="beforeUpload"
+            action=""
+            :show-file-list="false"
+          >
             <div class="upload-file-inner" style="padding: 20px 0">
               <Icon
                 type="ios-cloud-upload"
@@ -64,6 +71,37 @@ export default {
     },
     RouteToAnalysisResult() {
       this.$router.push('/analysisResult')
+    },
+    ReadTxtContent() {
+      let xhr = new XMLHttpRequest()
+      let okStatus = document.location.protocol === 'file:' ? 0 : 200
+      xhr.open('GET', 'text.txt', false) // public文件夹下的绝对路径
+      xhr.overrideMimeType('text/html;charset=utf-8')
+      xhr.send(null)
+      console.log(xhr.responseText) // xhr.responseText为文本中的内容
+    },
+    beforeUpload(file) {
+      console.log(file)
+      const isExe = file.name.endsWith('.txt')
+      if (!isExe) {
+        this.$message.error('只能上传txt文件')
+        return false
+      }
+      // this.handleChange(file)
+      return false
+    },
+    handleChange(file) {
+      let reader = new FileReader() //先new 一个读文件的对象 FileReader
+      console.log('读取文件')
+      //  reader.readAsText(file.raw, "gb2312");  //读.txt文件
+      reader.readAsArrayBuffer(file.raw) //读任意文件
+      reader.onload = function (e) {
+        var ints = new Uint8Array(e.target.result) //要使用读取的内容，所以将读取内容转化成Uint8Array
+        ints = ints.slice(0, 5000) //截取一段读取的内容
+        let snippets = new TextDecoder('gb2312').decode(ints) //二进制缓存区内容转化成中文（即也就是读取到的内容）
+        console.log('读取的内容如下：')
+        console.log(snippets)
+      }
     }
   }
 }

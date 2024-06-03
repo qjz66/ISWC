@@ -16,6 +16,8 @@ import Valid from './utils/valid'
 // 引入DataV
 import dataV from '@jiaminghi/data-view'
 
+import './assets/public.css'
+
 // 首页
 import '@/styles/base.css'
 import '@/styles/bootstrap.min.css'
@@ -58,21 +60,7 @@ router.beforeEach((to, from, next) => {
 	  document.title = to.meta.title;
 	}
 
-	// 判断是否需要登录信息
-	if (to.meta.requireAuth) {
-		if (store.state.userInfo.data.token) {
-			if (to.path == '/login') next('/');
-      else  next();
-		} 
-		else {
-			next('/login');
-		}
-	} else {
-		// if (store.state.userInfo.data.token) next('/');
-    // else next();
-    next();
-	}
-  // next();
+  next();
 })
 
 new Vue({

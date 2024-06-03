@@ -26,3 +26,11 @@ export function resetPwd(data) {
     data
   })
 }
+
+// 获取推送
+export function getRumourInfo() {
+  return network({
+    url: `/rd/push/get_rumors`,
+    method: "get",
+  });
+}
