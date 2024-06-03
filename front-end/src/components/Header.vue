@@ -5,7 +5,7 @@
         <div class="header-inner">
           <div class="logo" @click="RouteToHome">
             <span>
-              <img src="../picture/icon.png" alt="logo" /> RUMOUR ROBOT
+              <img src="../picture/icon.png" alt="logo" /> RUMOUR BUZZ
             </span>
           </div>
           <nav class="main-nav">

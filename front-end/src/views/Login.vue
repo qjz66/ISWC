@@ -174,7 +174,7 @@ export default {
 
       // 正则表达式判断邮箱/手机号
       if (!this.$Valid.validUserName(this.formLogin.userName)) {
-        this.$Message.error('请输入正确的邮箱/手机号')
+        this.$message.error('请输入正确的邮箱/手机号')
         return false
       }
 
@@ -195,14 +195,12 @@ export default {
 
       this.isLoading = true
 
-      // 构造发送数据
-      let form = {
-        username: this.formLogin.userName,
-        password: this.formLogin.userPwd
-      }
+      let formData = new FormData()
+      formData.append('username', this.formLogin.userName)
+      formData.append('password', this.formLogin.userPwd)
 
       // 发送登录的网络请求
-      login(form)
+      login(formData)
         .then((res) => {
           console.log('登录===', res)
           console.log('登录=', res.data)
@@ -214,10 +212,9 @@ export default {
             this.$Message.success('登录成功')
             // 保存用户信息
             this.$store.dispatch('userInfo/saveInfo', res.data)
-            console.log('成功')
-            console.log('11:', store.state.userInfo.data)
             // 路由跳转
             this.$router.push('/')
+            console.log('成功')
           } else {
             console.log('失败')
             this.$Message.error(res.msg)
@@ -236,38 +233,33 @@ export default {
 
       // 校验
       if (!this.$Valid.validUserName(this.formRegister.userName)) {
-        this.$Message.error('请输入正确的邮箱/手机号')
+        this.$message.error('请输入正确的邮箱/手机号')
         return false
       } else if (!this.$Valid.validPass(this.formRegister.userPwd)) {
-        this.$Message.error('密码应为8到20位字母或数字!')
+        this.$message.error('密码应为8到20位字母或数字!')
         return false
       } else if (!this.$Valid.validPass(this.formRegister.userPwd2)) {
-        this.$Message.error('确认密码有误')
+        this.$message.error('确认密码有误')
         return false
       } else if (this.formRegister.userPwd2 !== this.formRegister.userPwd) {
-        this.$Message.error('两次密码不一致')
+        this.$message.error('两次密码不一致')
         return false
       }
 
       this.isLoading = true
 
-      let data = {
-        username: this.formRegister.userName,
-        password: this.formRegister.userPwd2
-      }
+      let formData = new FormData()
+      formData.append('username', this.formRegister.userName)
+      formData.append('password', this.formRegister.userPwd2)
 
-      register(data)
+      register(formData)
         .then((res) => {
           this.isLoading = false
           console.log('注册===', res)
-          if (res.code == 0) {
+          if (res.status == 200) {
             // 清除输入框
             this.clearInput()
             this.$Message.success('注册成功')
-            // 保存用户信息
-            this.$store.dispatch('userInfo/saveInfo', res.data)
-            // 路由跳转
-            this.$router.push('/')
           } else {
             this.$Message.error(res.msg)
           }

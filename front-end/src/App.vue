@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <router-view />
-    <!-- <Home/> -->
   </div>
 </template>
 
@@ -12,15 +11,13 @@ export default {
   name: 'App',
   components: {
     Home
-  },
-  mounted() {
-    // this.$router.push('/home')
   }
 }
 </script>
 
 <style>
 #app {
+  background-color: #050828;
   width: 100vw;
   height: 100vh;
   -webkit-font-smoothing: antialiased;

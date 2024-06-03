@@ -128,21 +128,36 @@
       <div class="personal-analysis">
         <dv-border-box-9 style="height: 100%; width: 100%">
           <div class="personal-title">鉴别谣言的历史记录</div>
-          <el-col :span="8">
-            <el-card shadow="always"> 历史记录1 </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="always"> 历史记录2 </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="always"> 历史记录3 </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="always"> 历史记录4 </el-card>
-          </el-col>
-          <el-col :span="8">
-            <el-card shadow="always"> 历史记录5 </el-card>
-          </el-col>
+          <div class="personal-list">
+            <el-col :span="8">
+              <el-card shadow="always">
+                #20岁女生留学新加坡坠亡#，家属：离毕业不到10天，财物遗失。
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="always">
+                #知名配音演员公开维权#被侵权配音演员林景称“真正让人在意的不是AI，而是侵权。”#云中君钟离配音演员遭AI侵权
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="always">
+                【#怀孕学生被当肾病医治存在漏诊误诊#
+                】#怀孕学生被当肾病医治已达成赔偿协议#
+                5月31日，“怀胎7月女大学生被当肾病医治后身亡”一事，引发社会关注。
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="always">
+                #白开水在4小时内饮用活性最佳#水对人体很重要，人可以三天无饭，但绝不能三天无水。想要健康，必须要正确认识水，选对水，喝对水。#矿泉水苏打水喝了真的健康吗#？
+              </el-card>
+            </el-col>
+            <el-col :span="8">
+              <el-card shadow="always">
+                #顾客称一点点奶茶喝出壁虎#
+                当事人称，他在涉事门店点了一杯布丁奶茶，快喝完时发现的壁虎。其称自己当时全程都在店里，没有离开过，店家查了监控也知道这不可能是他放进去的。对此，#一点点门店回应奶茶喝出壁虎#表示，是不可能存在这种情况的，有人正在联系对方处理此事。#顾客在奶茶里喝出整只壁虎#
+              </el-card>
+            </el-col>
+          </div>
         </dv-border-box-9>
       </div>
     </div>
@@ -261,10 +276,11 @@ export default {
 
   .personal-analysis {
     float: right;
+    height: 600px;
     margin-top: -330px;
     margin-right: 400px;
     width: 600px;
-    height: 600px;
+
     text-align: center;
     color: white;
 
@@ -273,25 +289,51 @@ export default {
       font-size: 25px;
     }
 
-    .el-col-8 {
-      cursor: pointer;
-      margin-left: 20px;
-      padding-left: 20px;
-      padding-right: 20px;
-      width: calc(100% - 40px);
-    }
-    .el-card {
-      font-size: 20px;
-      color: white;
-      background-color: #363b79;
-      border: none;
-      border-radius: 20px;
-      margin-top: 20px;
+    .personal-list {
+      width: 586px;
+      height: 510px;
+      overflow-y: auto;
+
+      .el-col-8 {
+        cursor: pointer;
+        margin-left: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: calc(100% - 40px);
+      }
+      .el-card {
+        font-size: 20px;
+        color: white;
+        background-color: #363b79;
+        border: none;
+        border-radius: 20px;
+        margin-top: 20px;
+      }
+
+      .el-card:hover {
+        background-image: linear-gradient(to right, #25aae1, #40e495);
+        box-shadow: 0 7px 15px 0 rgba(49, 196, 190, 0.75);
+      }
     }
 
-    .el-card:hover {
-      background-image: linear-gradient(to right, #25aae1, #40e495);
-      box-shadow: 0 7px 15px 0 rgba(49, 196, 190, 0.75);
+    .personal-list::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+      /**/
+    }
+    .personal-list::-webkit-scrollbar-track {
+      background: rgb(239, 239, 239);
+      border-radius: 2px;
+    }
+    .personal-list::-webkit-scrollbar-thumb {
+      background: #bfbfbf;
+      border-radius: 10px;
+    }
+    .personal-list::-webkit-scrollbar-thumb:hover {
+      background: #333;
+    }
+    .personal-list::-webkit-scrollbar-corner {
+      background: #179a16;
     }
   }
 }
