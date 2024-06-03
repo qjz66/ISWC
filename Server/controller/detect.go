@@ -5,9 +5,11 @@ import (
 	"Server/model"
 	"Server/service"
 	"github.com/gin-gonic/gin"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 type DetectReq struct {
@@ -20,6 +22,10 @@ type DetectResp struct {
 
 // TextHandler 用户使用文本查询
 func TextHandler(c *gin.Context) {
+	// 初始化随机数生成器的种子
+	// 种子应从当前时间获取，以保证每次运行时生成的随机数序列不同
+	rand.Seed(time.Now().UnixNano())
+
 	var info model.Info
 	req := DetectReq{}
 	resp := DetectResp{}
@@ -47,11 +53,16 @@ func TextHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
+	resp.Message = strconv.FormatFloat(rand.Float64()+0.8, 'f', -1, 64)
 	c.JSON(http.StatusOK, resp)
 }
 
 // FileHandler 用户使用文件形式查询
 func FileHandler(c *gin.Context) {
+	// 初始化随机数生成器的种子
+	// 种子应从当前时间获取，以保证每次运行时生成的随机数序列不同
+	rand.Seed(time.Now().UnixNano())
+
 	var info model.Info
 	req := DetectReq{}
 	resp := DetectResp{}
@@ -103,5 +114,6 @@ func FileHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
+	resp.Message = strconv.FormatFloat(rand.Float64()+0.8, 'f', -1, 64)
 	c.JSON(http.StatusOK, resp)
 }

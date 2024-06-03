@@ -2,11 +2,17 @@ package dao
 
 import (
 	"Server/model"
-	"Server/util"
 	"context"
+	"encoding/json"
+	"strings"
 )
 
 const MAXNUM = 10
+
+type data struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
 
 // GetTopic 获得用户最常用的topic
 func (d *Dao) GetTopic(id int64) (string, error) {
@@ -32,6 +38,7 @@ func (d *Dao) GetTopic(id int64) (string, error) {
 
 // PushByTopic 根据检测最多的topic推送
 func (r *Redis) PushByTopic(rumors *[]model.Rumor, topic string) error {
+	var data data
 	num := 0
 	// 假设列表的键是"rumors"
 	listKey := "rumors"
@@ -49,7 +56,14 @@ func (r *Redis) PushByTopic(rumors *[]model.Rumor, topic string) error {
 			break
 		}
 		//将列表反序列化获得topic、uid、content
-		tmpRumor.Topic, tmpRumor.AuthorId, tmpRumor.Content, err = util.GetKey(element)
+		err = json.Unmarshal([]byte(element), &data)
+		if err != nil {
+			panic(err)
+		}
+		splitKey := strings.Split(data.Key, ":")
+		tmpRumor.Topic = splitKey[0]
+		tmpRumor.AuthorId = splitKey[1]
+		tmpRumor.Content = data.Value
 		tmpRumor.Platform = "weibo"
 		if tmpRumor.Topic == topic {
 			*rumors = append(*rumors, tmpRumor)
@@ -61,9 +75,10 @@ func (r *Redis) PushByTopic(rumors *[]model.Rumor, topic string) error {
 
 // Push 直接将redis库中前十条推送给用户
 func (r *Redis) Push(rumors *[]model.Rumor) error {
+	var data data
 	num := 0
 	// 假设列表的键是"rumors"
-	listKey := "rumors"
+	listKey := "weibo_posts"
 	var tmpRumor model.Rumor
 
 	// 获取列表中的所有元素
@@ -78,7 +93,14 @@ func (r *Redis) Push(rumors *[]model.Rumor) error {
 			break
 		}
 		//将列表反序列化获得topic、uid、content
-		tmpRumor.Topic, tmpRumor.AuthorId, tmpRumor.Content, err = util.GetKey(element)
+		err = json.Unmarshal([]byte(element), &data)
+		if err != nil {
+			panic(err)
+		}
+		splitKey := strings.Split(data.Key, ":")
+		tmpRumor.Topic = splitKey[0]
+		tmpRumor.AuthorId = splitKey[1]
+		tmpRumor.Content = data.Value
 		tmpRumor.Platform = "weibo"
 		*rumors = append(*rumors, tmpRumor)
 		num++

@@ -4,6 +4,7 @@ import (
 	"Server/model"
 	"Server/service"
 	"Server/util"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -77,6 +78,7 @@ func RegHandler(c *gin.Context) {
 	//绑定参数至结构体
 	req.Username = c.PostForm("username")
 	req.Password = c.PostForm("password")
+	fmt.Println(req.Username, req.Password)
 
 	//将用户信息插入数据库
 	id, err = svc.InsertUser(req.Username, req.Password)
@@ -101,6 +103,7 @@ func LoginHandler(c *gin.Context) {
 
 	req.Username = c.PostForm("username")
 	req.Password = c.PostForm("password")
+	fmt.Println(req.Username, req.Password)
 
 	id = svc.GetIDByName(req.Username, req.Password)
 	if id == 0 {

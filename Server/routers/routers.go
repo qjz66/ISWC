@@ -12,6 +12,7 @@ func InitRouter() *gin.Engine {
 	router.MaxMultipartMemory = 50 << 20 //限制文件上传大小
 	router.Static("/storage", "./storage")
 	rd := router.Group("/rd")
+	//rd.GET("/dataScreen",middleware.AuthByToken(),controller.)
 	user := rd.Group("/user")
 	{
 		user.GET("/history", middleware.AuthByToken(), controller.HistHandler)            // 历史查询

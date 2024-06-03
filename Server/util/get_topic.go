@@ -10,7 +10,7 @@ func GetKey(data string) (topic, uid, content string, err error) {
 	splitKey := strings.SplitN(data, "Key: ", 2)
 
 	// 提取Key后面的内容，然后按冒号分割
-	keyParts := strings.Split(splitKey[1], ":")
+	keyParts := strings.SplitN(splitKey[1], ":", 3)
 
 	// 提取topic和uid
 	topic = keyParts[0] // 第一个元素是topic
