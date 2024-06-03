@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="248f96cc-8688-45d8-8d7d-22c705be5033" name="信安作品赛服务器" url="121.43.144.140">
+        <fileTransfer rootFolder="/data" accessType="SFTP" host="121.43.144.140" port="22" sshConfigId="464849c8-1889-4902-be33-e4513cca7d46" sshConfig="root@121.43.144.140:22 agent" authAgent="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" isUseSudo="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

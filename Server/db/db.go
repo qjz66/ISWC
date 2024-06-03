@@ -8,7 +8,7 @@ func InitDB() {
 	//initRedis()
 	initMySql()
 	models := make([]interface{}, 0)
-	models = append(models, &model.User{})
+	models = append(models, &model.User{}, &model.Update{}, &model.BlackList{}, &model.Comment{}, &model.Info{}, &model.UserTopic{})
 	if err := MySqlDB.AutoMigrate(models...); err != nil {
 		panic(err)
 	}
