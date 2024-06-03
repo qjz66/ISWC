@@ -28,7 +28,7 @@ func GenerateToken(id int64, username string) (token string, err error) {
 	// 在使用GenerateToken函数之前生成jwtKey
 	jwtKey = generateJWTKey()
 	nowTime := time.Now()
-	expireTime := nowTime.Add(300 * time.Second)
+	expireTime := nowTime.Add(1800 * time.Second)
 	claims := TokenClaims{
 		Id:       id,
 		Username: username,

@@ -13,7 +13,7 @@ type MessageReturned struct {
 
 // User 用来存放用户信息
 type User struct {
-	ID         uint   `gorm:"primaryKey" json:"id"`
+	ID         int64  `gorm:"primaryKey" json:"id"`
 	RumorCount *int64 `json:"rumor count"` // 谣言数量，已检测出的谣言数目
 	Times      *int64 `json:"times"`       // 数量，检测次数
 	Username   string `json:"username"`    // 名字，用户名
@@ -22,7 +22,9 @@ type User struct {
 
 // Info 用来存入检测对象的信息
 type Info struct {
-	ID           uint                   `gorm:"primaryKey"`
-	Authenticity string                 `json:"authenticity"` // 真实性
-	Content      map[string]interface{} `json:"content"`      // 检测内容
+	InfoId       int64  `gorm:"primaryKey" json:"info_id"` //信息id
+	ID           int64  `json:"id"`                        //用户id
+	Authenticity string `json:"authenticity"`              // 真实性
+	Content      string `json:"content"`                   // 检测内容
+	Topic        string `json:"topic"`
 }

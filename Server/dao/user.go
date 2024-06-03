@@ -7,14 +7,14 @@ import (
 )
 
 // InsertUser 将用户信息插入到数据库
-func (d *Dao) InsertUser(username, password string) (id uint, err error) {
+func (d *Dao) InsertUser(username, password string) (id int64, err error) {
 	md5password := md5.Sum([]byte(password))
 	user := model.User{RumorCount: new(int64), Times: new(int64), Username: username, Password: hex.EncodeToString(md5password[:])}
 	result := d.Create(&user)
 	return user.ID, result.Error
 }
 
-func (d *Dao) GetIDByName(username, password string) (id uint) {
+func (d *Dao) GetIDByName(username, password string) (id int64) {
 	user := model.User{}
 	md5password := md5.Sum([]byte(password))
 	result := d.Where("username = ? and password = ?", username, hex.EncodeToString(md5password[:])).First(&user)
@@ -34,5 +34,11 @@ func (d *Dao) UpdatePassword(username, password string) error {
 // UpdateUsername 修改用户名称
 func (d *Dao) UpdateUsername(id int64, newUsername string) error {
 	err := d.Model(&model.User{}).Where("id = ?", id).Update("username", newUsername).Error
+	return err
+}
+
+// History 查看检测历史
+func (d *Dao) History(rumors *[]model.Info, id int64) (err error) {
+	err = d.Model(&model.Info{}).Where("id=?", id).Find(&rumors).Error
 	return err
 }

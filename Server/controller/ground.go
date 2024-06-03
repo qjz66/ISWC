@@ -65,7 +65,7 @@ func FavoriteHandler(c *gin.Context) {
 	var favorite int64
 
 	err := c.ShouldBind(&req)
-	updateId, _ := strconv.Atoi(c.Query("update_id"))
+	updateId, _ := strconv.Atoi(c.PostForm("update_id"))
 	Id, _ := strconv.Atoi(c.Query("id"))
 	req.UpdateID = int64(updateId)
 	req.ID = int64(Id)
@@ -73,11 +73,13 @@ func FavoriteHandler(c *gin.Context) {
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	favorite, err = svc.Favorite(req.ID, req.UpdateID)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.Favorite = favorite
 	resp.Message = "favorite success!"
@@ -89,20 +91,17 @@ func CommentHandler(c *gin.Context) {
 	resp := CommentResp{}
 	comment := model.Comment{ID: req.ID, Content: req.Content, UpdateID: req.UpdateID, Time: time.Now()}
 	svc := service.NewService(c)
-	err := c.ShouldBind(&req)
-	if err != nil {
-		resp.Message = err.Error()
-		c.JSON(http.StatusBadRequest, resp)
-	}
-	updateId, _ := strconv.Atoi(c.Query("update_id"))
+	updateId, _ := strconv.Atoi(c.PostForm("update_id"))
 	Id, _ := strconv.Atoi(c.Query("id"))
+	req.Content = c.PostForm("content")
 	comment.UpdateID = int64(updateId)
 	comment.ID = int64(Id)
 	comment.Content = req.Content
-	err = svc.Comment(comment)
+	err := svc.Comment(comment)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.Message = "comment success!"
 	c.JSON(http.StatusOK, resp)
@@ -118,6 +117,7 @@ func GetCommentsHandler(c *gin.Context) {
 		resp.Message = err.Error()
 		resp.Comments = nil
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	updateId, _ := strconv.Atoi(c.Query("update_id"))
 	req.UpdateID = int64(updateId)
@@ -126,6 +126,7 @@ func GetCommentsHandler(c *gin.Context) {
 		resp.Message = err.Error()
 		resp.Comments = nil
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.Message = "comments success!"
 	resp.Comments = comments
@@ -142,12 +143,14 @@ func BlackListHandler(c *gin.Context) {
 		resp.Message = err.Error()
 		resp.Blacklist = nil
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	err = svc.GetBlackList(&blackList)
 	if err != nil {
 		resp.Message = err.Error()
 		resp.Blacklist = nil
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.Message = "blacklist success!"
 	resp.Blacklist = blackList
@@ -163,6 +166,7 @@ func UpdateHandler(c *gin.Context) {
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	Id, _ := strconv.Atoi(c.Query("id"))
 	req.ID = int64(Id)
@@ -170,6 +174,7 @@ func UpdateHandler(c *gin.Context) {
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.UpdateID = updateId
 	resp.Message = "update success!"
@@ -185,6 +190,7 @@ func GetUpdateListHandler(c *gin.Context) {
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
+		return
 	}
 	resp.Message = "update success!"
 	resp.Updates = updateList

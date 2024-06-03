@@ -3,7 +3,6 @@ package routers
 import (
 	"Server/controller"
 	"Server/middleware"
-	"Server/websocket"
 	"github.com/gin-gonic/gin"
 )
 
@@ -19,7 +18,7 @@ func InitRouter() *gin.Engine {
 		user.POST("/register", controller.RegHandler)                                     // 注册
 		user.POST("/login", controller.LoginHandler)                                      // 登录
 		user.PUT("/update_password", middleware.AuthByToken(), controller.UpdatePassword) //修改密码
-		user.PUT("update_username", middleware.AuthByToken(), controller.UpdateUsername)  //修改用户名
+		user.PUT("/update_username", middleware.AuthByToken(), controller.UpdateUsername) //修改用户名
 	}
 	ground := rd.Group("/ground")
 	{
@@ -33,9 +32,11 @@ func InitRouter() *gin.Engine {
 	detect := rd.Group("/detect")
 	{
 		detect.POST("/upload_text", middleware.AuthByToken(), controller.TextHandler)
-		detect.POST("/upload_file", middleware.AuthByToken(), func(c *gin.Context) {
-			websocket.ServeWebSocket(c.Writer, c.Request)
-		})
+		detect.POST("/upload_file", middleware.AuthByToken(), controller.FileHandler)
+	}
+	push := rd.Group("/push")
+	{
+		push.GET("get_rumors", middleware.AuthByToken(), controller.PushHandler)
 	}
 
 	return router

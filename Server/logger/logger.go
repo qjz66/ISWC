@@ -16,7 +16,7 @@ import (
 )
 
 // InitLogger 初始化Logger
-func Init() (err error) {
+func InitLogger() (err error) {
 	//配置分割文档的属性
 	writeSyncer := getLogWriter(
 		viper.GetString("log.filename"),
