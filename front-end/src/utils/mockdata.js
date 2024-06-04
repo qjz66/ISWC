@@ -6,7 +6,6 @@ const comment = {
     {
       id: 'comment0001', //主键id
       date: '2024-6-1 15:00',  //评论时间
-      ownerId: 'talents100020', //文章的id
       fromId: 'errhefe232213',  //评论者id
       fromName: '评论家',   //评论者昵称
       likeNum: 3, //点赞人数
@@ -17,7 +16,7 @@ const comment = {
       reply: [  //回复，或子评论
         {
           id: '34523244545',  //主键id
-          commentId: 'comment0001',  //父评论id，即父亲的id
+          updateId: 'comment0001',  //父评论id，即父亲的id
           fromId: 'observer223432',  //评论者id
           fromName: '夕阳红',  //评论者昵称
           toId: 'errhefe232213',  //被评论者id
@@ -27,7 +26,7 @@ const comment = {
         },
         {
           id: '34523244545',
-          commentId: 'comment0001',
+          updateId: 'comment0001',
           fromId: 'observer567422',
           fromName: '清晨一缕阳光',
           toId: 'observer223432',
@@ -40,7 +39,6 @@ const comment = {
     {
       id: 'comment0002',
       date: '2024-5-25 13:52',
-      ownerId: 'talents100020',
       fromId: 'errhefe232213',
       fromName: '毒蛇纲',
       likeNum: 4,
@@ -51,7 +49,7 @@ const comment = {
       reply: [
         {
         id: '34523244545',  //主键id
-        commentId: 'comment0001',  //父评论id，即父亲的id
+        updateId: 'comment0001',  //父评论id，即父亲的id
         fromId: 'observer223432',  //评论者id
         fromName: '春天',  //评论者昵称
         toId: 'errhefe232213',  //被评论者id

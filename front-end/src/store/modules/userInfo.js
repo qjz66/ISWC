@@ -4,7 +4,9 @@ const userInfo = {
   
   // 数据
   state: {
-    data: {},
+    data: {
+      userName:'玖月'
+    },
     isLogined: false
   },
 

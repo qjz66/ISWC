@@ -14,12 +14,12 @@
       <!-- 文件上传 -->
       <div class="uploadFile" v-if="typeView === 0">
         <dv-border-box-11 title="文件上传">
-          <Upload
+          <el-upload
             class="upload-file"
             multiple
             type="drag"
-            :before-upload="beforeUpload"
-            action=""
+            :on-change="beforeUpload"
+            action="none"
             :show-file-list="false"
           >
             <div class="upload-file-inner" style="padding: 20px 0">
@@ -30,7 +30,7 @@
               ></Icon>
               <p>上传txt文件</p>
             </div>
-          </Upload>
+          </el-upload>
         </dv-border-box-11>
       </div>
       <!-- 文本输入 -->
@@ -41,20 +41,23 @@
             type="textarea"
             :autosize="{ maxRows: 10, minRows: 10 }"
             :rows="10"
+            v-model="content"
             placeholder="请输入您需要鉴别的新闻"
           />
         </dv-border-box-11>
       </div>
     </div>
     <!-- 提交按钮 -->
-    <div class="upload-confirm" @click="RouteToAnalysisResult">
-      <button class="send-btn">确认上传</button>
+    <div class="upload-confirm">
+      <button @click="RouteToAnalysisResult" class="send-btn">确认上传</button>
     </div>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
+import { analysisNews } from '../utils/api'
+
 export default {
   name: 'uploadFile',
   components: {
@@ -62,24 +65,51 @@ export default {
   },
   data() {
     return {
-      typeView: 0
+      typeView: 0,
+      content: ''
     }
   },
   methods: {
+    // 切换文件上传、文本输入
     ChangeType(type) {
       this.typeView = type
+      this.content = ''
     },
+    // 上传信息给后端,获取分析报告
     RouteToAnalysisResult() {
-      this.$router.push('/analysisResult')
+      console.log('内容：', this.content)
+      if (this.content == '') {
+        this.$message.error('输入内容不能为空！！！')
+        return
+      }
+
+      let params = {
+        id: this.$store.state.userInfo.data.id
+      }
+
+      let data = new FormData()
+      data.append('content', this.content)
+
+      analysisNews(params, data).then((res) => {
+        console.log('上传:', res)
+        if (res.status == 200) {
+          console.log('上传成功')
+          // hits.historyInfo = res.data.rumors
+          console.log(res.data)
+          this.$router.push({
+            name: 'AnalysisResult',
+            params: {
+              content: this.content,
+              possibility: res.data.message
+            }
+          })
+        } else {
+          console.log('上传失败')
+          this.$message.error(res.msg)
+        }
+      })
     },
-    ReadTxtContent() {
-      let xhr = new XMLHttpRequest()
-      let okStatus = document.location.protocol === 'file:' ? 0 : 200
-      xhr.open('GET', 'text.txt', false) // public文件夹下的绝对路径
-      xhr.overrideMimeType('text/html;charset=utf-8')
-      xhr.send(null)
-      console.log(xhr.responseText) // xhr.responseText为文本中的内容
-    },
+    // 上传文件的时候读取文件内容,判断是否为txt文件
     beforeUpload(file) {
       console.log(file)
       const isExe = file.name.endsWith('.txt')
@@ -87,21 +117,21 @@ export default {
         this.$message.error('只能上传txt文件')
         return false
       }
-      // this.handleChange(file)
+      this.readTxtContent(file)
       return false
     },
-    handleChange(file) {
+    // 读取文件内容
+    readTxtContent(file) {
       let reader = new FileReader() //先new 一个读文件的对象 FileReader
       console.log('读取文件')
-      //  reader.readAsText(file.raw, "gb2312");  //读.txt文件
-      reader.readAsArrayBuffer(file.raw) //读任意文件
-      reader.onload = function (e) {
-        var ints = new Uint8Array(e.target.result) //要使用读取的内容，所以将读取内容转化成Uint8Array
-        ints = ints.slice(0, 5000) //截取一段读取的内容
-        let snippets = new TextDecoder('gb2312').decode(ints) //二进制缓存区内容转化成中文（即也就是读取到的内容）
-        console.log('读取的内容如下：')
-        console.log(snippets)
+      reader.readAsText(file.raw, 'utf-8') //读.txt文件
+      reader.onload = (e) => {
+        // 读取文件内容
+        const fileString = e.target.result
+        this.content = fileString
+        // console.log(fileString)
       }
+      console.log(this.content)
     }
   }
 }
@@ -198,12 +228,10 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%);
 
-      .ivu-upload-drag {
-        border: 0px;
-      }
-
-      .ivu-upload:hover {
-        border: 0px;
+      .el-upload {
+        position: relative;
+        left: 50%;
+        transform: translate(-50%, 0);
       }
 
       .upload-file-inner {

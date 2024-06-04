@@ -60,7 +60,18 @@ router.beforeEach((to, from, next) => {
 	  document.title = to.meta.title;
 	}
 
-  next();
+  const token = store.state.userInfo.data.token;
+
+  if (to.path === '/login') {
+    // 如果目标路由是登录页，则直接放行
+    next();
+  } else if (!token) {
+    // 如果token不存在，则重定向到登录页
+    next('/login');
+  } else {
+    // 如果token存在，则正常放行
+    next();
+  }
 })
 
 new Vue({

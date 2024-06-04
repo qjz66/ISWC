@@ -24,7 +24,7 @@ service.interceptors.response.use(
   response => {
     console.log(response)
     // 抛出401错误，因为token失效，重新刷新页面，清空缓存，跳转到登录界面
-    if (response.data.code == 401 || response.data.code === 403) {
+    if (response.status == 401 || response.status === 403) {
       store.dispatch('userInfo/logout')
       .then(() => {
         location.reload();
@@ -41,12 +41,12 @@ service.interceptors.response.use(
         .then(() => {
           location.reload();
         });
-        Vue.prototype.$Message.error({
+        Vue.prototype.$message.error({
           content: 'token失效,或长时间未操作,请重新登录',
           duration: 5
         })
     } else {
-        Vue.prototype.$Message.error({
+        Vue.prototype.$message.error({
           content: '网络异常，请稍后再试',
           duration: 5
         })

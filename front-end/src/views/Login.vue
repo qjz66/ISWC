@@ -162,7 +162,7 @@ export default {
 
     // 忘记密码界面
     forgetPwd() {
-      this.$Message.info('忘记密码，请联系客服')
+      this.$message.info('忘记密码，请联系客服')
     },
 
     // 立即登录
@@ -180,7 +180,7 @@ export default {
 
       // 正则表达式判断密码
       if (!this.$Valid.validPass(this.formLogin.userPwd)) {
-        this.$Message.error('密码应为8到20位字母或数字!')
+        this.$message.error('密码应为8到20位字母或数字!')
         return false
       }
 
@@ -209,7 +209,7 @@ export default {
           if (res.status == 200) {
             // 清除输入框
             this.clearInput()
-            this.$Message.success('登录成功')
+            this.$message.success('登录成功')
             // 保存用户信息
             this.$store.dispatch('userInfo/saveInfo', res.data)
             // 路由跳转
@@ -217,7 +217,7 @@ export default {
             console.log('成功')
           } else {
             console.log('失败')
-            this.$Message.error(res.msg)
+            this.$message.error(res.msg)
           }
         })
         .catch(() => {
@@ -259,9 +259,9 @@ export default {
           if (res.status == 200) {
             // 清除输入框
             this.clearInput()
-            this.$Message.success('注册成功')
+            this.$message.success('注册成功')
           } else {
-            this.$Message.error(res.msg)
+            this.$message.error(res.msg)
           }
         })
         .catch(() => {

@@ -9,7 +9,7 @@
       <dv-decoration-7 style="width: 275px; height: 150px"
         >分析报告</dv-decoration-7
       >
-      <span class="share-report" @click="addUpdate"
+      <span class="share-report" @click="shareResult"
         >分享该报告 <img src="../picture/zhuanfa.png" alt=""
       /></span>
     </div>
@@ -17,36 +17,66 @@
     <div class="news-title">
       <el-col :span="16">
         <el-card shadow="always">
-          [三星折叠屏原型机曝光:双屏设计/非柔性屏]网友@黎启lee晒出三星的ProjcetV可折叠屏手机原型机，这款原型机拥有两块屏幕，但并不是现在流行的柔性屏，而是两块固定的屏幕通过铰链连接。中间的铰链明显，手机可以对折收纳。
+          {{ content }}
         </el-card>
       </el-col>
     </div>
     <!-- 分析的结论 -->
     <div class="news-result">
       <span>置信概率:</span>
-      <dv-decoration-9 style="width: 150px; height: 150px">92%</dv-decoration-9>
+      <dv-decoration-9 style="width: 150px; height: 150px"
+        >{{ possibility }}%</dv-decoration-9
+      >
     </div>
     <!-- 分析的过程 -->
-    <div class="news-analysis">
+    <!-- <div class="news-analysis">
       <div class="news-analysis-title">分析：</div>
       <p>新闻隐性标签提取：科技、健康、生活</p>
       <p>关键词（热点分析）：屏 手机 三星</p>
       <p>视图权重参数：语义：0.82;情感：0.71;风格：0.93</p>
       <p>分析参考：科技：0.93;健康：0.76;生活：0.86</p>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header.vue'
+import { shareAnalysisResult, getNowTime } from '../utils/api'
 export default {
   name: 'analysisResult',
   components: {
     Header
   },
+  data() {
+    return {
+      content: '',
+      possibility: 0
+    }
+  },
+  mounted() {
+    this.content = this.$route.params.content
+    this.possibility = (this.$route.params.possibility * 100).toFixed(1)
+  },
   methods: {
-    addUpdate() {
-      // 添加新的动态
+    // 分享新的动态
+    shareResult() {
+      let params = {
+        id: this.$store.state.userInfo.data.id
+      }
+
+      let data = new FormData()
+      data.append('content', this.content)
+      data.append('date', getNowTime())
+      data.append('fromName', this.$store.state.userInfo.data.userName)
+
+      shareAnalysisResult(params, data).then((res) => {
+        console.log('分享动态:', res)
+        if (res.status == 200) {
+          console.log('分享动态成功')
+        } else {
+          console.log('分享动态失败')
+        }
+      })
     }
   }
 }
