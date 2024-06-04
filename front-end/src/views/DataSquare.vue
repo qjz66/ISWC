@@ -23,7 +23,7 @@
         </div>
       </div>
       <!-- 动态显示 -->
-      <div class="info-body" v-for="item in comments" :key="item.date">
+      <div class="info-body" v-for="item in comments" :key="item.id">
         <div class="info-show" v-if="item.showStatus">
           <!-- 个人信息 -->
           <div class="info">
@@ -40,7 +40,7 @@
             <span class="control-dianzan" v-if="item.likeStatus === 0">
               <img
                 src="../picture/dianzan_white.png"
-                @click="ChangeLike(item, 1)"
+                @click="changeLike(item, 1)"
                 alt=""
               />
               <span>{{ item.likeNum }}</span>
@@ -48,7 +48,7 @@
             <span class="control-dianzan" v-else-if="item.likeStatus === 1">
               <img
                 src="../picture/dianzan_red.png"
-                @click="ChangeLike(item, 0)"
+                @click="changeLike(item, 0)"
                 alt=""
               />
               <span>{{ item.likeNum }}</span>
@@ -74,7 +74,7 @@
           <!-- 回复列表 -->
           <div class="reply">
             <!-- 评论列表 -->
-            <div class="item" v-for="reply in item.reply" :key="reply.date">
+            <div class="item" v-for="reply in item.comment" :key="reply.id">
               <div class="reply-content">
                 <span class="from-name">{{ reply.fromName }}</span
                 ><span>: </span>
@@ -122,44 +122,10 @@
         <div class="blacklist-title">黑名单</div>
         <div class="blacklist-body">
           <el-row>
-            <el-col :span="24">
+            <el-col :span="24" v-for="black in blackList" :key="black.id">
               <el-card shadow="always">
-                ID:1674289 用户名:心花小子 新浪微博 谣言发布次数:65
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:1243239 用户名:百事可爱 新浪微博 谣言发布次数:57
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:1567434 用户名:寄云间 新浪微博 谣言发布次数:49
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:193234534 用户名:鸭梨山大 b站 谣言发布次数:43
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:1634572 用户名:呦呦儿 新浪微博 谣言发布次数:33
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:182589234 用户名:隔壁小孩 b站 谣言发布次数:31
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:1272345 用户名:怀中猫 新浪微博 谣言发布次数:29
-              </el-card>
-            </el-col>
-            <el-col :span="24">
-              <el-card shadow="always">
-                ID:1678025798 用户名:空山梦 b站 谣言发布次数:27
+                ID:{{ black.id }} 用户名:{{ black.username }}
+                {{ black.platform }} 谣言发布次数:{{ black.number }}
               </el-card>
             </el-col>
           </el-row>
@@ -172,7 +138,13 @@
 <script>
 import Header from '@/components/Header.vue'
 import * as CommentData from '../utils/mockdata'
-import { getRumourInfo } from '@/utils/api'
+import {
+  getRumourInfo,
+  getNowTime,
+  getBlackList,
+  showLike,
+  postCommit
+} from '@/utils/api'
 
 export default {
   name: 'dataSquare',
@@ -185,82 +157,18 @@ export default {
       comments: [],
       inputComment: '',
       showItemId: '',
-      targetName: ''
+      targetName: '',
+      targetId: '',
+      blackList: []
     }
   },
   mounted() {
-    this.comments = CommentData.comment.data
-    // this.getInfo()
+    // this.comments = CommentData.comment.data
+    this.getCommentInfo()
+    this.getBlackListInfo()
   },
   methods: {
-    ChangeLike(item, type) {
-      item.likeStatus = type
-      if (type == 0) {
-        // 取消点赞
-        item.likeNum--
-      } else if (type == 1) {
-        //点赞
-        item.likeNum++
-      }
-    },
-    showCommentInput(item, reply) {
-      if (reply) {
-        this.inputComment = '@' + reply.fromName + ' '
-        this.targetName = reply.fromName + ' '
-      } else {
-        this.inputComment = ''
-        this.targetName = item.fromName
-      }
-      this.showItemId = item.id
-    },
-    cancelComment() {
-      this.showItemId = ''
-    },
-    cancelSearch() {
-      console.log('清空输入框')
-      this.textarea = ''
-      this.commitSearch()
-    },
-    getNowTime() {
-      let year = new Date().getFullYear() //获取当前时间的年份
-      let month = new Date().getMonth() + 1 //获取当前时间的月份
-      let day = new Date().getDate() //获取当前时间的天数
-      let hours = new Date().getHours() //获取当前时间的小时
-      let minutes = new Date().getMinutes() //获取当前时间的分数
-      //当小于 10 的是时候，在前面加 0
-      if (hours < 10) {
-        hours = '0' + hours
-      }
-      if (minutes < 10) {
-        minutes = '0' + minutes
-      }
-      //拼接格式化当前时间
-      let times = year + '-' + month + '-' + day + ' ' + hours + ':' + minutes
-      return times
-    },
-    commitComment(item) {
-      console.log('评论内容：', this.inputComment)
-      console.log(this.comments)
-      let content = ''
-      if (this.inputComment.startsWith('@')) {
-        content = this.inputComment.split(' ').slice(1).join(' ')
-      } else {
-        content = this.inputComment
-      }
-      console.log(content)
-      let newComment = {
-        id: item.id, //主键id
-        commentId: item.commentId, //父评论id，即父亲的id
-        fromId: 'observer2232432', //评论者id
-        fromName: '枯城', //评论者昵称
-        toId: item.commentId, //被评论者id
-        toName: this.targetName, //被评论者昵称
-        content: content, //评论内容
-        date: this.getNowTime() //评论时间
-      }
-      item.reply.push(newComment)
-      this.showItemId = ''
-    },
+    // 搜索动态
     commitSearch() {
       console.log('动态内容:', this.textarea)
       this.comments.forEach((item) => {
@@ -271,26 +179,145 @@ export default {
         }
       })
     },
+    // 取消搜索,即清空搜索内容
+    cancelSearch() {
+      console.log('清空输入框')
+      this.textarea = ''
+      this.commitSearch()
+    },
+    // 点赞或者取消点赞
+    changeLike(item, type) {
+      item.likeStatus = type
+      if (type == 0) {
+        // 取消点赞
+        item.likeNum--
+      } else if (type == 1) {
+        //点赞
+        item.likeNum++
+      }
+
+      let params = {
+        id: this.$store.state.userInfo.data.id
+      }
+
+      let data = new FormData()
+      data.append('updateId', item.id)
+
+      showLike(params, data).then((res) => {
+        console.log('点赞:', res)
+        if (res.status == 200) {
+          console.log('点赞成功')
+        } else {
+          console.log('点赞失败')
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    // 展示出评论输入框
+    showCommentInput(item, reply) {
+      if (reply) {
+        this.inputComment = '@' + reply.fromName + ' '
+        this.targetName = reply.fromName + ' '
+        this.targetId = reply.fromId
+      } else {
+        this.inputComment = ''
+        this.targetName = item.fromName
+        this.targetId = item.fromId
+      }
+      this.showItemId = item.id
+    },
+    // 取消评论(隐去评论输入框)
+    cancelComment() {
+      this.showItemId = ''
+    },
+    // 提交评论
+    commitComment(item) {
+      // 格式化输入的内容
+      console.log('评论内容：', this.inputComment)
+      console.log(this.comments)
+      let content = ''
+      if (this.inputComment.startsWith('@')) {
+        content = this.inputComment.split(' ').slice(1).join(' ')
+      } else {
+        content = this.inputComment
+      }
+      console.log(content)
+
+      let params = {
+        id: this.$store.state.userInfo.data.id
+      }
+
+      let data = new FormData()
+      data.append('updateId', item.id)
+      data.append('fromName', this.$store.state.userInfo.data.username)
+      data.append('toId', this.targetId)
+      data.append('toName', this.targetName)
+      data.append('content', content)
+      data.append('date', getNowTime())
+
+      postCommit(params, data).then((res) => {
+        console.log('评论:', res)
+        if (res.status == 200) {
+          console.log('评论成功')
+
+          let newComment = {
+            id: res.data.commentId, //主键id
+            updateId: item.id, //父评论id，即父亲的id
+            fromId: this.$store.state.userInfo.data.id, //评论者id
+            fromName: this.$store.state.userInfo.data.userName, //评论者昵称
+            toId: this.targetId, //被评论者id
+            toName: this.targetName, //被评论者昵称
+            content: content, //评论内容
+            date: getNowTime() //评论时间
+          }
+          console.log(newComment)
+          item.comment.push(newComment)
+
+          this.showItemId = ''
+        } else {
+          console.log('评论失败')
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    // 赞成和反对
     changeAgree(item, type) {
       item.agree = type
     },
-    getInfo() {
-      let data = {
+    // 获取动态列表以及评论列表、黑名单
+    getCommentInfo() {
+      let params = {
         id: this.$store.state.userInfo.data.id
       }
-      getRumourInfo(data)
-        .then((res) => {
-          console.log('获取推送:', res)
-          if (res.status == 200) {
-            console.log('成功')
-          } else {
-            console.log('失败')
-            this.$Message.error(res.msg)
-          }
-        })
-        .catch(() => {
-          this.isLoading = false
-        })
+      // 获取动态列表以及评论列表
+      getRumourInfo(params).then((res) => {
+        console.log('获取推送:', res)
+        if (res.status == 200) {
+          console.log('获取推送成功')
+          this.comments = res.data.updates
+          console.log('this.comments', this.comments)
+          console.log(typeof this.comments[0].comment)
+        } else {
+          console.log('获取推送失败')
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    getBlackListInfo() {
+      let params = {
+        id: this.$store.state.userInfo.data.id
+      }
+      // 获取黑名单
+      getBlackList(params).then((res) => {
+        console.log('获取黑名单:', res)
+        if (res.status == 200) {
+          console.log('获取黑名单成功')
+          this.blackList = res.data.blacklist
+        } else {
+          console.log('获取黑名单失败')
+          this.$message.error(res.msg)
+        }
+      })
     }
   }
 }
