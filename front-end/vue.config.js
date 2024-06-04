@@ -2,7 +2,9 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-  // publicPath: isProduction ? '/todo-vue-admin/' : '/',
+  publicPath: "./",
+  assetsDir: "static",
+  outputDir: 'dist',
   productionSourceMap: false,
   lintOnSave: false,
   devServer: {
@@ -12,9 +14,6 @@ module.exports = {
         target: 'http://121.43.144.140:8080',
         changeOrigin: true,
         ws: false,
-        // pathRewrite: {
-        //   "^/rd": "/rd"
-        // }
       }
     }
   },
