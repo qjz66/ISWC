@@ -23,11 +23,11 @@ func InitRouter() *gin.Engine {
 	}
 	ground := rd.Group("/ground")
 	{
-		ground.PUT("/favorite", middleware.AuthByToken(), controller.FavoriteHandler)
+		ground.POST("/favorite", middleware.AuthByToken(), controller.FavoriteHandler)
 		ground.POST("/comment", middleware.AuthByToken(), controller.CommentHandler)
 		ground.POST("/update", middleware.AuthByToken(), controller.UpdateHandler)
 		ground.GET("/blacklist", middleware.AuthByToken(), controller.BlackListHandler)
-		ground.GET("/get_comments", middleware.AuthByToken(), controller.GetCommentsHandler)
+		//ground.GET("/get_comments", middleware.AuthByToken(), controller.GetCommentsHandler)
 		ground.GET("/get_updates", middleware.AuthByToken(), controller.GetUpdateListHandler)
 	}
 	detect := rd.Group("/detect")

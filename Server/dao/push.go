@@ -41,7 +41,7 @@ func (r *Redis) PushByTopic(rumors *[]model.Rumor, topic string) error {
 	var data data
 	num := 0
 	// 假设列表的键是"rumors"
-	listKey := "rumors"
+	listKey := "weibo_posts"
 	var tmpRumor model.Rumor
 
 	// 获取列表中的所有元素
@@ -58,7 +58,8 @@ func (r *Redis) PushByTopic(rumors *[]model.Rumor, topic string) error {
 		//将列表反序列化获得topic、uid、content
 		err = json.Unmarshal([]byte(element), &data)
 		if err != nil {
-			panic(err)
+			//panic(err)
+			continue
 		}
 		splitKey := strings.Split(data.Key, ":")
 		tmpRumor.Topic = splitKey[0]
@@ -82,7 +83,7 @@ func (r *Redis) Push(rumors *[]model.Rumor) error {
 	var tmpRumor model.Rumor
 
 	// 获取列表中的所有元素
-	listElements, err := r.LRange(context.Background(), listKey, 0, -1).Result()
+	listElements, err := r.LRange(context.Background(), listKey, 0, 10).Result()
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +96,8 @@ func (r *Redis) Push(rumors *[]model.Rumor) error {
 		//将列表反序列化获得topic、uid、content
 		err = json.Unmarshal([]byte(element), &data)
 		if err != nil {
-			panic(err)
+			//panic(err)
+			continue
 		}
 		splitKey := strings.Split(data.Key, ":")
 		tmpRumor.Topic = splitKey[0]

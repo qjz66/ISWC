@@ -6,7 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-	"time"
 )
 
 type FavorReq struct {
@@ -19,21 +18,28 @@ type FavorResp struct {
 }
 
 type UpdateReq struct {
-	ID      int64  `json:"id"`
-	Content string `json:"content"`
+	Id       int64  `json:"id"`
+	Content  string `json:"content"`
+	Date     string `json:"date"`
+	FromName string `json:"fromName"`
 }
 type UpdateResp struct {
 	Message  string `json:"message"`
-	UpdateID int64  `json:"update_id"`
+	UpdateID int64  `json:"updateId"`
 }
 
 type CommentReq struct {
-	ID       int64  `json:"id"`
-	UpdateID int64  `json:"update_id"`
+	Id       int64  `json:"Id"`
+	UpdateId int64  `json:"updateId"`
+	FromName string `json:"fromName"`
+	ToId     int64  `json:"toId"`
+	ToName   string `json:"toName"`
 	Content  string `json:"content"`
+	Date     string `json:"date"`
 }
 type CommentResp struct {
-	Message string `json:"message"`
+	Message   string `json:"message"`
+	CommentId int64  `json:"commentId"`
 }
 
 type GetCommentsReq struct {
@@ -65,7 +71,7 @@ func FavoriteHandler(c *gin.Context) {
 	var favorite int64
 
 	err := c.ShouldBind(&req)
-	updateId, _ := strconv.Atoi(c.PostForm("update_id"))
+	updateId, _ := strconv.Atoi(c.PostForm("updateId"))
 	Id, _ := strconv.Atoi(c.Query("id"))
 	req.UpdateID = int64(updateId)
 	req.ID = int64(Id)
@@ -75,7 +81,7 @@ func FavoriteHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
-	favorite, err = svc.Favorite(req.ID, req.UpdateID)
+	favorite, err = svc.Favorite(req.UpdateID)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
@@ -89,21 +95,36 @@ func FavoriteHandler(c *gin.Context) {
 func CommentHandler(c *gin.Context) {
 	req := CommentReq{}
 	resp := CommentResp{}
-	comment := model.Comment{ID: req.ID, Content: req.Content, UpdateID: req.UpdateID, Time: time.Now()}
+	comment := model.Comment{}
 	svc := service.NewService(c)
-	updateId, _ := strconv.Atoi(c.PostForm("update_id"))
+	updateId, _ := strconv.Atoi(c.PostForm("updateId"))
 	Id, _ := strconv.Atoi(c.Query("id"))
+	toId, _ := strconv.Atoi(c.PostForm("toId"))
+	req.Id = int64(Id)
+	req.UpdateId = int64(updateId)
+	req.FromName = c.PostForm("fromName")
+	req.ToName = c.PostForm("toName")
 	req.Content = c.PostForm("content")
-	comment.UpdateID = int64(updateId)
-	comment.ID = int64(Id)
+	req.Date = c.PostForm("date")
+	req.ToId = int64(toId)
+	req.Content = c.PostForm("content")
+
+	comment.UpdateID = req.UpdateId
+	comment.AuthorID = req.Id
+	comment.AuthorName = req.FromName
+	comment.UpdateAuthorID = req.ToId
+	comment.AuthorName = req.ToName
+	comment.Date = req.Date
 	comment.Content = req.Content
-	err := svc.Comment(comment)
+
+	commentId, err := svc.Comment(comment)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
 	resp.Message = "comment success!"
+	resp.CommentId = commentId
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -161,16 +182,28 @@ func UpdateHandler(c *gin.Context) {
 	req := UpdateReq{}
 	resp := UpdateResp{}
 	svc := service.NewService(c)
+	var update model.Update
+	favorite := new(int64)
+	*favorite = 0
+	LikeStatus := new(int64)
+	*LikeStatus = 0
+	showStatus := true
+	agree := 2
 
-	err := c.ShouldBind(&req)
-	if err != nil {
-		resp.Message = err.Error()
-		c.JSON(http.StatusBadRequest, resp)
-		return
-	}
 	Id, _ := strconv.Atoi(c.Query("id"))
-	req.ID = int64(Id)
-	updateId, err := svc.Update(req.Content, req.ID)
+	req.Id = int64(Id)
+	req.Date = c.PostForm("date")
+	req.FromName = c.PostForm("fromName")
+	req.Content = c.PostForm("content")
+	update.AuthorID = req.Id
+	update.AuthorName = req.FromName
+	update.Content = req.Content
+	update.Date = req.Date
+	update.ShowStatus = showStatus
+	update.Agree = int64(agree)
+	update.LikeStatus = LikeStatus
+	update.Favorite = favorite
+	updateId, err := svc.Update(update)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)

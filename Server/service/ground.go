@@ -3,17 +3,17 @@ package service
 import "Server/model"
 
 // Favorite 调用dao层同名函数
-func (svc *Service) Favorite(authorId, updateId int64) (int64, error) {
-	return svc.d.Favorite(authorId, updateId)
+func (svc *Service) Favorite(updateId int64) (int64, error) {
+	return svc.d.Favorite(updateId)
 }
 
 // Update 调用dao层同名函数
-func (svc *Service) Update(content string, id int64) (int64, error) {
-	return svc.d.Update(content, id)
+func (svc *Service) Update(update model.Update) (int64, error) {
+	return svc.d.Update(update)
 }
 
 // Comment 调用dao层同名函数
-func (svc *Service) Comment(comment model.Comment) error {
+func (svc *Service) Comment(comment model.Comment) (int64, error) {
 	return svc.d.Comment(comment)
 }
 

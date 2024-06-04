@@ -45,7 +45,7 @@ func TextHandler(c *gin.Context) {
 		info.Authenticity = "true"
 		resp.Message = info.Authenticity
 	}
-
+	info.Authenticity = strconv.FormatFloat(rand.Float64()*0.2+0.8, 'f', 3, 64)
 	info.Topic = "tech"
 	err := svc.InsertIntoInfo(info, info.Topic)
 	if err != nil {
@@ -53,7 +53,7 @@ func TextHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
-	resp.Message = strconv.FormatFloat(rand.Float64()+0.8, 'f', -1, 64)
+	resp.Message = info.Authenticity
 	c.JSON(http.StatusOK, resp)
 }
 
@@ -107,13 +107,13 @@ func FileHandler(c *gin.Context) {
 		info.Authenticity = "true"
 		resp.Message = info.Authenticity
 	}
-
+	info.Authenticity = strconv.FormatFloat(rand.Float64()*0.2+0.8, 'f', 3, 64)
 	err = svc.InsertIntoInfo(info, info.Topic)
 	if err != nil {
 		resp.Message = err.Error()
 		c.JSON(http.StatusBadRequest, resp)
 		return
 	}
-	resp.Message = strconv.FormatFloat(rand.Float64()+0.8, 'f', -1, 64)
+	resp.Message = info.Authenticity
 	c.JSON(http.StatusOK, resp)
 }
