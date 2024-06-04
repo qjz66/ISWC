@@ -137,7 +137,7 @@
 
 <script>
 import Header from '@/components/Header.vue'
-import * as CommentData from '../utils/mockdata'
+
 import {
   getRumourInfo,
   getNowTime,
